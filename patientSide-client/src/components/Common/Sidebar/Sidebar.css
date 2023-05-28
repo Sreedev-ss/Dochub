@@ -1,0 +1,7 @@
+.sidebar {
+  border-radius: 10px;
+  grid-area: sidebar;
+}
+.sidebar .active {
+  background-color: rgba(75, 85, 99, 0.061);
+}/*# sourceMappingURL=Sidebar.css.map */

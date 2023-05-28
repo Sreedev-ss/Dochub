@@ -1,0 +1,16 @@
+.HomePage {
+  grid-area: banner;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.HomePage .banner {
+  padding: 5px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 10px;
+}
+.HomePage .banner img {
+  width: 265px;
+  height: 200px;
+  border-radius: 10px;
+}/*# sourceMappingURL=HomeBanner.css.map */

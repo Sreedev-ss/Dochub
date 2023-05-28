@@ -1,0 +1,14 @@
+.doctor {
+    grid-area: doctorList;
+    border-radius: 10px;
+    overflow: hidden;
+
+        .doctorList{
+            .list{
+
+                overflow: scroll;
+            }
+        }
+    
+    
+}

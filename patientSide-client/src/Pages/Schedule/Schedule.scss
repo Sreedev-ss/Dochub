@@ -1,0 +1,9 @@
+.container-schedule {
+    padding-top: 0.1px;
+    display: grid;
+    grid-template-areas: 'navbar navbar navbar navbar navbar navbar '
+        'sidebar schedule schedule schedule schedule schedule ';
+    grid-template-columns: 256px;
+    max-width: 100% !important;
+    gap: 8px;
+}

@@ -1,0 +1,11 @@
+.navbar {
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  grid-area: navbar;
+}
+.navbar .css-1orzy9s {
+  margin-left: 166px;
+  width: auto;
+  border: 1px solid rgb(231, 230, 230);
+}/*# sourceMappingURL=Navbar.css.map */
