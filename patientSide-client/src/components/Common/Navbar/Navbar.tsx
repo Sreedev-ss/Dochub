@@ -90,11 +90,11 @@ const sidebarItems: Ikeys[] = [{
           <div className="flex items-center space-x-2" onClick={showLogout}>
             <span className="flex flex-col">
               <span className="text-sm font-medium text-gray-900">
-                {userData.isAuthenticated ? userData.user?.name.toUpperCase() : 'Please Login'}
+                {userData.isAuthenticated ? userData?.user?.name?.toUpperCase() : 'Please Login'}
               </span>
             </span>
             {userData.isAuthenticated ?
-              userData.user.profileURL == false ? <Avatar sx={{backgroundColor:'black'}}>{userData.user?.name}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData.user?.profileURL} /> :
+              userData?.user?.profileURL == false ? <Avatar sx={{backgroundColor:'black'}}>{userData?.user?.name}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData?.user?.profileURL} /> :
               <img className="inline-block w-10 h-10 rounded-full" src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" />}
           </div>
           {logoutDiv && <div className='absolute p-1 border-2 top-16 bg-gray-100'>

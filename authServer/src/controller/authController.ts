@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 import { DoctorRepository } from '../repositories/doctor';
+import { PatientRepository } from '../repositories/patient';
 
 const authService = new AuthService();
 const doctorRepo = new DoctorRepository();
+const patientRepo = new PatientRepository();
 
 const signup = async (req: Request, res: Response) => {
     try {
@@ -16,8 +18,6 @@ const signup = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-    console.log('hey');
-    
     try {
         const { email, password, IdToken } = req.body;
         const user = await authService.login(email, password, IdToken);
@@ -26,6 +26,16 @@ const login = async (req: Request, res: Response) => {
         res.status(401).json({ error: error.message });
     }
 };
+
+const getPatientById = async (req: Request, res: Response) => {
+    try {
+        const id:string = req.params.id
+        const data = await patientRepo.findById(id)
+        res.json(data)
+    } catch (error) {
+        res.status(401).json({ error: error.message });
+    }
+}
 
 const getDoctor = async (req: Request, res: Response) => {
     try {
@@ -37,4 +47,4 @@ const getDoctor = async (req: Request, res: Response) => {
     }
 };
 
-export { signup, login, getDoctor };
+export { signup, login, getDoctor, getPatientById };

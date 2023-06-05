@@ -5,7 +5,7 @@ import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { docServer } from '../../services/axios/axios';
+import {  makeApiCall } from '../../services/axios/axios';
 import { useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
 import { showAlert } from '../../config/Redux/alertSlice';
@@ -67,14 +67,22 @@ const ScheduleDoctor = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    async function getDoctorData() {
+      const doctorServer = async () => {
+        return makeApiCall(`/doctor/get-doctor-details/${id}`, 'GET');
+      };
+      try {
+        const { data } = await doctorServer()
+        setDoctor(data)
+        dispatch(hideLoading())
+      } catch (error: any) {
+        dispatch(hideLoading())
+        dispatch(showAlert(error.message))
+      }
+    }
     dispatch(showLoading())
-    docServer.get(`/get-doctor-details/${id}`).then(({ data }) => {
-      setDoctor(data)
-      dispatch(hideLoading())
-    }).catch((err: any) => {
-      dispatch(hideLoading())
-      dispatch(showAlert(err.message))
-    })
+    getDoctorData()
+
   }, [])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

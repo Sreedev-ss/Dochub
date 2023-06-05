@@ -10,7 +10,7 @@ const HomeBanner = () => {
   return (
     <React.Fragment>
       <div className="HomePage">
-        <h1 className='font-medium text-2xl mt-2 flex justify-start mx-3 tracking-widest'>Welcome {userData?.user?.name.split(' ').join('')} &#128522;</h1>
+        <h1 className='font-medium text-2xl mt-2 flex justify-start mx-3 tracking-widest'>Welcome {userData?.user?.name?.split(' ').join('')} &#128522;</h1>
         <div className="banner flex justify-between bg-white px-10 ml-1 mr-3 mt-3">
           <div className='flex flex-col md:items-start lg:items-start sm:items-center  justify-center'>
             <h1 className='font-medium text-gray-600 md:text-xl sm:text-sm hidden sm:block '>Get Response For Your Health problems</h1>

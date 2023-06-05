@@ -7,13 +7,13 @@ import { Google as GoogleLogo } from '@mui/icons-material';
 import { useEffect, useState } from 'react'
 import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../services/Firebase/config';
-import { authServer } from '../../services/axios/axios';
+import { makeApiCall } from '../../services/axios/axios';
 import { Link, useNavigate } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import { showLoading, hideLoading } from '../../config/Redux/loadingSlice'
-import { loginSuccess, loginFailure } from '../../config/Redux/authSlice'
+import { loginSuccess, loginFailure, fetchUserDetails } from '../../config/Redux/authSlice'
 import { showAlert } from '../../config/Redux/alertSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { validateName, validateEmail, validatePassword, validateCPassword } from '../../auth/validations'
@@ -69,7 +69,7 @@ const Signup = () => {
                 handleValidation()
             }
             if (type === EMAIL_ && !nameValid.valid && !emailValid.valid && !passwordValid.valid && !cPasswordValid.valid) {
-                return 
+                return
             }
 
             dispatch(showLoading())
@@ -88,10 +88,17 @@ const Signup = () => {
             const IdToken = await response.user.getIdToken()
 
             try {
-                const response = await authServer.post("/signup", { IdToken,role:'patient' })
-                dispatch(hideLoading())
-                dispatch(loginSuccess(response.data))
-                navigate('/')
+                const signup = async (credentials: { IdToken: string, role: string }) => {
+                    return makeApiCall('/auth/patient/signup', 'POST', credentials);
+                };
+                signup({ IdToken, role: 'patient' }).then((response) => {
+                    dispatch(hideLoading())
+                    dispatch(loginSuccess(response.data._id))
+                    dispatch(fetchUserDetails(response.data._id))
+                    navigate('/')
+                }).catch((error: any) => {
+                    throw error
+                })
 
             } catch (err: any) {
                 const errObj = {
@@ -216,7 +223,7 @@ const Signup = () => {
             <div className='mt-10 flex flex-col items-center gap-4'>
                 <ThemeProvider theme={theme}>
                     <Button color='primary' className='w-96 h-12' variant="contained" onClick={() => signupUser(EMAIL_)}>Create account</Button>
-                    <Button className='w-96 h-12' variant="outlined" onClick={() => signupUser('')}><GoogleLogo className='mr-2' color='secondary'></GoogleLogo>Sign in with google</Button>
+                    <Button className='w-96 h-12' variant="outlined" onClick={() => signupUser('')}><GoogleLogo className='mr-2' color='secondary'></GoogleLogo>Sign up with google</Button>
                 </ThemeProvider>
                 <Link to={'/login'}><span className="text-black text-sm mt-1">Already have an account?<span className="text-orange-300 text-sm"> Login</span></span></Link>
             </div>

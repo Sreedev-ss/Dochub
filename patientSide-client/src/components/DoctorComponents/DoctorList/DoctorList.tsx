@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// import './DoctorList.scss'
-import { docServer } from '../../../services/axios/axios'
+import { makeApiCall } from '../../../services/axios/axios'
 import { useDispatch } from 'react-redux'
 import { hideLoading, showLoading } from '../../../config/Redux/loadingSlice'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +10,10 @@ const DoctorList = () => {
     const navigate = useNavigate()
     useEffect(() => {
         const getDoctor = async () => {
-            const { data }: any = await docServer.get('/all-doctor');
+            const doctorServer = async () => {
+                return makeApiCall('/doctor/all-doctor', 'GET' );
+            };
+            const { data }: any = await doctorServer()
             setDoctors(data)
             dispatch(hideLoading())
         }

@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
@@ -7,9 +7,9 @@ import { Google as GoogleLogo } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../services/Firebase/config';
-import { authServer } from '../../services/axios/axios';
+import { makeApiCall } from '../../services/axios/axios';
 import { showLoading, hideLoading } from '../../config/Redux/loadingSlice'
-import { loginSuccess, loginFailure } from '../../config/Redux/authSlice'
+import { loginSuccess, loginFailure, fetchUserDetails } from '../../config/Redux/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { showAlert } from '../../config/Redux/alertSlice';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -28,7 +28,7 @@ const theme = createTheme({
     },
 });
 
-const Login: React.FC  = () => {
+const Login: React.FC = () => {
     const EMAIL_ = "email"
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -73,10 +73,18 @@ const Login: React.FC  = () => {
             const IdToken = await response.user.getIdToken()
 
             try {
-                const response = await authServer.post('/login', { IdToken })  
-                dispatch(hideLoading())
-                dispatch(loginSuccess(response.data))
-                navigate('/')
+                const login = async (credentials: { IdToken: string }) => {
+                    return makeApiCall('/auth/patient/login', 'POST', credentials);
+                };
+                login({ IdToken: IdToken }).then((response) => {
+                    dispatch(hideLoading())
+                    dispatch(loginSuccess(response.data.userId))
+                    dispatch(fetchUserDetails(response.data.userId))
+                    navigate('/')
+                }).catch((error: any) => {
+                    dispatch(hideLoading())
+                    console.log(error);
+                })
             } catch (err: any) {
                 const errObj = {
                     message: err?.message
@@ -121,7 +129,7 @@ const Login: React.FC  = () => {
                             id={emailValid.valid ? "outlined-required" : "outlined-error"}
                             helperText={emailValid.error}
                             label="Email"
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         />
                     </div>
                 </Box>
@@ -140,7 +148,7 @@ const Login: React.FC  = () => {
                             helperText={passwordValid.error}
                             label="Password"
                             type={showPassword ? 'password' : 'text'}
-                            onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

@@ -13,19 +13,19 @@ import Schedule from './Pages/Schedule/Schedule'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
+  const { loading } = useSelector((state: any) => state.auth)
   const { show } = useSelector((state: any) => state.alert)
   return (
     <>
       {isloading && <Loading />}
+      {loading && <Loading />}
       {show && <Alert />}
       <Routes>
         <Route path='/' element={
           <Home />
         } />
         <Route path='/doctors' element={
-          <ProtectedRoute>
             <Doctor />
-          </ProtectedRoute>
         } />
         <Route path='/doctors/schedule/:id' element={
           <ProtectedRoute>

@@ -1,12 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { makeApiCall } from '../../services/axios/axios';
 
-export const authSlice:any = createSlice({
+export const fetchUserDetails: any = createAsyncThunk(
+  'auth/fetchUserDetails',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const patientData = async () => {
+        return makeApiCall(`/auth/patient/patientData/${userId}`, 'GET');
+      };
+      const response = await patientData()
+      return response.data
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+interface IinitialState {
+  isAuthenticated: boolean;
+  user: object | null;
+  error: string | null;
+  loading: boolean
+}
+
+const initialState: IinitialState = {
+  isAuthenticated: false,
+  user: null,
+  error: null,
+  loading: false
+}
+
+export const authSlice: any = createSlice({
   name: 'auth',
-  initialState: {
-    isAuthenticated: false,
-    user: null,
-    error: null,
-  },
+  initialState,
   reducers: {
     loginSuccess: (state, action) => {
       state.isAuthenticated = true;
@@ -23,6 +49,21 @@ export const authSlice:any = createSlice({
       state.user = null;
       state.error = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchUserDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
