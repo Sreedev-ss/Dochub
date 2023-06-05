@@ -6,7 +6,7 @@ export const serverConfig = () => {
     return {
         name: "DocHub ",
         port : process.env.PORT || 8081,
-        baseUrl : '/admin',
+        baseUrl : '/doc',
         db:{
             url : process.env.MONGODB_URL
         },
