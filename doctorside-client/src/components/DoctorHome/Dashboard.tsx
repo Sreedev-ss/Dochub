@@ -6,7 +6,6 @@ const Dashboard = () => {
     return (
         <React.Fragment>
             <Box component="main" >
-                hagsggs
             </Box>
         </React.Fragment>
     )

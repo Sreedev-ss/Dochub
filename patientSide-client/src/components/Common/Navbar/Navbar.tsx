@@ -4,6 +4,15 @@ import { logoutSuccess } from '../../../config/Redux/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
+import {
+  Home,
+  Diversity1,
+  PersonalVideoOutlined,
+  VideoChatOutlined,
+  ChatOutlined,
+  MedicalInformationOutlined,
+  BookOnlineOutlined
+} from '@mui/icons-material';
 
 
 const Navbar = () => {
@@ -21,10 +30,52 @@ const Navbar = () => {
     setLogoutDiv(false)
   }
 
+  interface Ikeys {
+    name: string,
+    link: string,
+    icon: React.SVGProps<SVGSVGElement>
+}
+
+const sidebarItems: Ikeys[] = [{
+    name: 'Dashboard',
+    link: '/',
+    icon: <Home />
+},
+{
+    name: 'Doctors',
+    link: '/doctors',
+    icon: <Diversity1 />
+},
+{
+    name: 'Blog',
+    link: '/Blog',
+    icon: <PersonalVideoOutlined />
+},
+{
+    name: 'Video chat',
+    link: '/videochat',
+    icon: <VideoChatOutlined />
+},
+{
+    name: 'Chat',
+    link: '/chat',
+    icon: <ChatOutlined />
+},
+{
+    name: 'Health care',
+    link: '/healthcare',
+    icon: <MedicalInformationOutlined />
+},
+{
+    name: 'Appointments',
+    link: '/appointments',
+    icon: <BookOnlineOutlined />
+}]
+
   return (
 
     <React.Fragment>
-      <div className='navbar p-4 flex justify-between items-center px-10'>
+      <div className='navbar w-screen p-4 flex justify-between items-center px-10'>
         <nav className="flex items-center">
           <a
             className="text-3xl font-bold leading-none flex items-center space-x-4"
@@ -43,7 +94,7 @@ const Navbar = () => {
               </span>
             </span>
             {userData.isAuthenticated ?
-              userData.user.profileURL == false ? <Avatar sx={{backgroundColor:'black'}}>{userData.user?.name.slice(0, 1)}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData.user.profileURL} /> :
+              userData.user.profileURL == false ? <Avatar sx={{backgroundColor:'black'}}>{userData.user?.name}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData.user?.profileURL} /> :
               <img className="inline-block w-10 h-10 rounded-full" src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" />}
           </div>
           {logoutDiv && <div className='absolute p-1 border-2 top-16 bg-gray-100'>

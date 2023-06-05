@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import authSlice from './authslice';
 import stateSlice from './stateSlice';
 import loadingSlice from './loadingSlice';
+import alertSlice from './alertSlice';
 
 const persistConfig = {
     key:'root',
@@ -14,7 +15,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth:persistReducer(persistConfig, authSlice),
     state:stateSlice,
-    loading:loadingSlice
+    loading:loadingSlice,
+    alert: alertSlice
 })
 
 const store = configureStore({

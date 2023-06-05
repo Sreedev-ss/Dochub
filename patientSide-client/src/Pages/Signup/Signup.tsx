@@ -88,7 +88,7 @@ const Signup = () => {
             const IdToken = await response.user.getIdToken()
 
             try {
-                const response = await authServer.post("/signup", { IdToken })
+                const response = await authServer.post("/signup", { IdToken,role:'patient' })
                 dispatch(hideLoading())
                 dispatch(loginSuccess(response.data))
                 navigate('/')

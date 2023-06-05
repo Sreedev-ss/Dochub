@@ -1,8 +1,1 @@
-.container-doctor {
-  padding-top: 0.1px;
-  display: grid;
-  grid-template-areas: "navbar navbar navbar navbar navbar navbar " "sidebar doctorList doctorList doctorList doctorList doctorList";
-  grid-template-columns: 256px;
-  max-width: 100% !important;
-  gap: 8px;
-}/*# sourceMappingURL=Doctor.css.map */
+/*# sourceMappingURL=Doctor.css.map */

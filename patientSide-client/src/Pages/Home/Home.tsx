@@ -10,15 +10,21 @@ const Home = () => {
   const dispatch = useDispatch()
   dispatch(hideAlert())
   return (
-    <>
-      <div className="container-home">
-        <Navbar />
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="mt-2 flex flex-grow">
         <Sidebar />
-        <ErrorBoundary>
-           <HomeBanner />
-        </ErrorBoundary>
+        <div className="flex-grow mx-2">
+          <ErrorBoundary>
+            <HomeBanner />
+          </ErrorBoundary>
+        </div>
       </div>
-    </>
+    </div>
+
+
+
+
   )
 }
 

@@ -3,14 +3,27 @@ import ScheduleDoctor from '../../components/Schedule/scheduleDoctor'
 import Navbar from '../../components/Common/Navbar/Navbar'
 import Sidebar from '../../components/Common/Sidebar/Sidebar'
 import './Schedule.scss'
+import { hideAlert } from '../../config/Redux/alertSlice'
+import { useDispatch } from 'react-redux'
+import ErrorBoundary from '../../util/ErrorBoundary'
 
 const Schedule = () => {
+    const dispatch = useDispatch()
+    dispatch(hideAlert())
     return (
-        <div className="container-schedule">
+
+        <div className="flex flex-col h-screen">
             <Navbar />
-            <Sidebar />
-            <ScheduleDoctor />
+            <div className="mt-2 flex flex-grow">
+                <Sidebar />
+                <div className="flex-grow mx-2">
+                    <ErrorBoundary>
+                    <ScheduleDoctor />
+                    </ErrorBoundary>
+                </div>
+            </div>
         </div>
+
     )
 }
 

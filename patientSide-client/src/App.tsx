@@ -20,16 +20,16 @@ function App() {
       {show && <Alert />}
       <Routes>
         <Route path='/' element={
-            <Home />
+          <Home />
         } />
         <Route path='/doctors' element={
           <ProtectedRoute>
-            <Doctor  />
+            <Doctor />
           </ProtectedRoute>
         } />
-        <Route path='/schedule' element={
+        <Route path='/doctors/schedule/:id' element={
           <ProtectedRoute>
-            <Schedule  />
+            <Schedule />
           </ProtectedRoute>
         } />
         <Route path='/signup' element={<Signup />} />

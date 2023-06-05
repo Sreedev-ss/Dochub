@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { Box, Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { createTheme } from '@mui/material/styles';
@@ -28,7 +28,7 @@ const theme = createTheme({
     },
 });
 
-const Login = () => {
+const Login: React.FC  = () => {
     const EMAIL_ = "email"
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -54,7 +54,6 @@ const Login = () => {
 
 
     const loginUser = async (type: string) => {
- 
         try {
             if (type === EMAIL_) {
                 handleValidation()

@@ -1,12 +1,15 @@
-import React, { useState, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid, Container, Typography, TextField, Button, Paper, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import './Login.scss'
 import { validateEmail, validatePassword } from '../../auth/validations';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { authServer } from '../../services/axios';
+import { authServer, docServer } from '../../services/axios';
+import { loginFailure, loginSuccess } from '../../config/Redux/authslice';
+import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
+import { showAlert } from '../../config/Redux/alertSlice';
 
 const theme = createTheme();
 
@@ -18,6 +21,14 @@ const LoginPage: React.FC = () => {
     const [passwordValid, setPasswordValid] = useState({ valid: false, error: "" });
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { isAuthenticated } = useSelector((state: any) => state.auth)
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            return navigate(-1)
+        }
+    }, [isAuthenticated])
+
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -28,30 +39,40 @@ const LoginPage: React.FC = () => {
         setPasswordValid(validatePassword(password))
     }
 
-    const handleSubmit = async(event: SyntheticEvent) => {
+    const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault();
 
         handleValidation()
 
-        if (!emailValid.valid && !passwordValid.valid) {
+        if (!emailValid.valid || !passwordValid.valid) {
             return
         }
 
-        authServer.post('/login',{email,password}).then((response)=>{
-        }).catch((error)=>{
-            if(error.response){
-                console.log(error.response.data);
-            }else if (error.request){
-                console.log(error.request);
-            }else{
-                console.log(error,'error in else');
-                
+        dispatch(showLoading())
+
+        authServer.post('/login', { email, password }).then(async (response) => {
+            if (response.status) {
+                try {
+                    const { data } = await docServer.get(`/get-doctor/${response.data.email}`)
+                    const fullData = { data: data, id: response.data.userId, token: response.data.token }
+                    dispatch(hideLoading())
+                    dispatch(showAlert('SUCCESS FULLY LOGGED IN'))
+                    dispatch(loginSuccess(fullData))
+                    navigate('/doctor')
+                } catch (error: any) {
+                    const errObj = {
+                        message: error?.message
+                    }
+                    throw errObj
+                }
             }
+
+        }).catch((err: any) => {
+            dispatch(showAlert(err.message))
+            dispatch(hideLoading())
+            dispatch(loginFailure(err.message))
         })
-        
     };
-
-
     return (
         <ThemeProvider theme={theme}>
             <Grid container style={{ height: '100vh' }}>

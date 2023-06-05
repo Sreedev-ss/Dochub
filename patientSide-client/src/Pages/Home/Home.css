@@ -1,8 +1,1 @@
-.container-home {
-  padding-top: 0.1px;
-  display: grid;
-  grid-template-areas: "navbar navbar navbar navbar navbar navbar " "sidebar banner banner banner banner banner ";
-  grid-template-columns: 256px;
-  max-width: 100% !important;
-  gap: 8px;
-}/*# sourceMappingURL=Home.css.map */
+/*# sourceMappingURL=Home.css.map */

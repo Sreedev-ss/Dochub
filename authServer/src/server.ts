@@ -3,11 +3,13 @@ import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import patientRoute from './router/patient/patientRoute'
 import doctorRoute from './router/doctor/doctorRoute'
+import adminRoute from './router/admin/adminRoute'
 import cors from 'cors'
 import { serverConfig } from './serverConfig'
 import { httpStatus } from './constants/httpStatus'
 import dotEnv from 'dotenv'
 import getAuthData from './controller/authDataAccess'
+import bodyParser from 'body-parser'
 dotEnv.config()
 
 const app = express()
@@ -15,6 +17,7 @@ const httpMsg = httpStatus()
 const server = serverConfig()
 
 app.use(cors())
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger('dev'))
 app.use(express.json())
@@ -22,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(`${server.baseUrl}/patient`, patientRoute)
 app.use(`${server.baseUrl}/doctor`, doctorRoute)
+app.use(`${server.baseUrl}/admin`,adminRoute)
 app.get(`${server.baseUrl}/checkAuth`,getAuthData)
 
 app.use((req, res) => {
