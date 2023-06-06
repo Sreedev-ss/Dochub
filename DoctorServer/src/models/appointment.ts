@@ -14,7 +14,9 @@ interface Appointment {
     time:string,
     fees:number,
     payment:boolean,
-    payment_intent:string
+    payment_intent:string,
+    doctorName:string,
+    doctorProfile:string
 }
 
 interface AppointmentDocument extends Appointment, Document {}
@@ -72,6 +74,13 @@ const AppointmentSchema = new Schema<AppointmentDocument>({
         type:String,
         default:''
     },
+    doctorName:{
+        type:String,
+        required:true
+    },
+    doctorProfile:{
+        type:String,
+    }
 
 })
 

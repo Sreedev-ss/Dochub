@@ -11,6 +11,7 @@ import ProtectedRoute from './auth/protectedRoute'
 import Alert from './components/Common/alert/alert'
 import Schedule from './Pages/Schedule/Schedule'
 import PaymentSuccess from './components/Common/success/success'
+import Appointment from './Pages/Appointments/Appointment'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
@@ -38,6 +39,7 @@ function App() {
         <Route path='/success' element={<PaymentSuccess/>} />
         <Route path='/cancel' element={'Payment failed'} />
         <Route path='*' element={<PageNotFound />} />
+        <Route path='/appointments' element={<Appointment />} />
       </Routes>
     </>
   )

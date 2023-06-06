@@ -4,6 +4,13 @@ class AppointmentRepository {
     async findById(id: string): Promise<AppointmentDocument | null> {
         return AppointmentModel.findById(id).exec();
     }
+    async findByPatientId(patientId: string): Promise<AppointmentDocument[] | null> {
+        return AppointmentModel.find({patientId}).sort({ _id: -1 }).exec();
+    }
+    
+    async findByDoctorId(doctorId: string): Promise<AppointmentDocument[] | null> {
+        return AppointmentModel.find({doctorId}).sort({ _id: -1 }).exec();
+    }
 
     async findByEmail(email: string): Promise<AppointmentDocument | null> {
         return AppointmentModel.findOne({ email }).exec();

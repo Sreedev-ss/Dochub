@@ -26,7 +26,6 @@ app.all('/*', async (req: Request, res: Response) => {
             method: req.method as AxiosRequestConfig['method'],
             url,
             data: req.body,
-            params: req.query,
         };
         console.log(config);
 

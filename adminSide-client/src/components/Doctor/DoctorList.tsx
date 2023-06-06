@@ -48,7 +48,7 @@ const DoctorList = () => {
 
                 {categories.map(category => (
                     <div key={category} className="doctorList p-5 gap-10 rounded-lg flex items-center bg-white ml-1 mr-3 mt-3">
-                        <div className='flex flex-col align-middle items-center justify-center'>
+                        <div className='flex w-28 max-w-lg flex-col align-middle items-center justify-center'>
                             <h1 className='mx-7 text-xl font-medium'>{category}</h1>
                             <button className='border w-20 rounded-lg hover:bg-gray-200 hover:transition-all text-sm text-blue-500 border-blue-200 bg-transparent'>View all</button>
                         </div>

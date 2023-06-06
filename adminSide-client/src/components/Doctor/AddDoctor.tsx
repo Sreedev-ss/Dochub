@@ -7,6 +7,10 @@ import { makeApiCall } from '../../services/axios/axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
+import axios from 'axios';
+
+import cloudinary from 'cloudinary-core';
+
 interface Doctor {
     name: string;
     address: string;
@@ -45,14 +49,36 @@ const AddDoctorForm = () => {
     const [specializationValue, setspecializationValue] = useState('');
     const [departments, setDepartments] = useState([])
 
-    useEffect(()=>{
+    useEffect(() => {
         const getDepartment = async () => {
             return makeApiCall('/doctor/get-department', 'GET');
         };
-        getDepartment().then(({data})=>{
+        getDepartment().then(({ data }) => {
             setDepartments(data)
         })
-    },[])
+    }, [])
+
+
+    // const [uploadedImage, setUploadedImage] = useState<string>('');
+
+    // const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const image = e.target.files?.[0];
+    //     if (image) {
+    //         const file = new FormData();
+    //         file.append('file', image);
+
+    //         file.append('upload_preset', 'halo-doc-doctor-profile');
+    //         file.append('cloud_name', 'halo-doc');
+    //         file.append('api_key', import.meta.env.CLOUDINARY_API_KEY);
+
+    //         const cloudLink = await cloudinaryUpload.post('/upload', file, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //         });
+
+    //     }
+    // };
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
@@ -70,10 +96,10 @@ const AddDoctorForm = () => {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         dispatch(showLoading())
-        const addDoctor = async (credentials: {doctor:Doctor}) => {
+        const addDoctor = async (credentials: { doctor: Doctor }) => {
             return makeApiCall('/doctor/add-doctor', 'POST', credentials);
         };
-        addDoctor({doctor}).then(({ data }) => {
+        addDoctor({ doctor }).then(({ data }) => {
             console.log(data);
             dispatch(hideLoading())
             navigate('/admin/doctors')
@@ -162,11 +188,11 @@ const AddDoctorForm = () => {
                                 label="Specialization"
                                 input={<OutlinedInput />}
                             >
-                                {departments.map((items:any)=>{
+                                {departments.map((items: any) => {
                                     return <MenuItem value={items.specialization}>{items.specialization}</MenuItem>
-                                    
+
                                 })}
-                                
+
                             </Select>
                         </FormControl>
                         <TextField name='fees' label="Fees" fullWidth margin="normal" onChange={handleInputChange} />
@@ -242,6 +268,10 @@ const AddDoctorForm = () => {
                         ))}
                     </Box> */}
                     <TextField name='about' label="About" fullWidth multiline rows={4} margin="normal" onChange={handleInputChange} />
+                    {/* <div>
+                        {uploadedImage && <img src={uploadedImage} alt="Uploaded" />}
+                        <input type="file" accept="image/*" onChange={handleImageUpload} />
+                    </div> */}
                     <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                         Add Doctor
                     </Button>

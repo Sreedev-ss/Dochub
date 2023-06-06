@@ -123,7 +123,9 @@ const ScheduleDoctor = () => {
       time,
       doctorId: doctor?.DoctorId,
       patientId: user._id,
-      fees:doctor?.fees
+      fees:doctor?.fees,
+      doctorName:doctor?.name,
+      doctorProfile:doctor?.photoURL
     }))
   }
 
@@ -134,18 +136,16 @@ const ScheduleDoctor = () => {
         return makeApiCall('/doctor/add-appointment', 'POST', credentials);
       };
       const {data} = await addAppointment({data:scheduleFormData})
-      console.log(data);
+      dispatch(showLoading())
       const payment = async (credentials:{appointmentId:string, fees:any}) => {
         return makeApiCall('/payment/stripe', 'POST', credentials);
       }
       const response = await payment({ appointmentId:data._id, fees:data.fees})
-      console.log(response.data);
       window.location.href = response.data.url
       dispatch(hideLoading())
     } catch (error) {
       dispatch(hideLoading())
       console.log(error);
-      
     }
     
   }
