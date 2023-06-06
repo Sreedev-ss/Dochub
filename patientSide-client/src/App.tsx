@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import ProtectedRoute from './auth/protectedRoute'
 import Alert from './components/Common/alert/alert'
 import Schedule from './Pages/Schedule/Schedule'
+import PaymentSuccess from './components/Common/success/success'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
@@ -34,6 +35,8 @@ function App() {
         } />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/success' element={<PaymentSuccess/>} />
+        <Route path='/cancel' element={'Payment failed'} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </>

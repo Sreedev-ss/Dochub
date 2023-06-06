@@ -1,15 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import {  makeApiCall } from '../../services/axios/axios';
-import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { makeApiCall } from '../../services/axios/axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
 import { showAlert } from '../../config/Redux/alertSlice';
-import ScheduleFill from '../ScheduleFill/ScheduleFill';
+import Loading from '../Common/Loading/loading';
+const ScheduleFill = React.lazy(() => import('./ScheduleFill'));
+const ScheduleTime = React.lazy(() => import('./schueduleTime'));
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,11 +63,14 @@ const a11yProps = (index: number) => {
 }
 
 const ScheduleDoctor = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [doctor, setDoctor] = useState<Doctor>()
+  const [scheduleFormData, setScheduleFormData] = useState({})
+  const [time, setTime] = useState('')
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch()
-
+  const { user } = useSelector((state: any) => state.auth)
+  const navigate = useNavigate()
   useEffect(() => {
     async function getDoctorData() {
       const doctorServer = async () => {
@@ -74,6 +79,7 @@ const ScheduleDoctor = () => {
       try {
         const { data } = await doctorServer()
         setDoctor(data)
+        setTime(doctor?.worktime?.split(' ')[0] as string)
         dispatch(hideLoading())
       } catch (error: any) {
         dispatch(hideLoading())
@@ -82,12 +88,12 @@ const ScheduleDoctor = () => {
     }
     dispatch(showLoading())
     getDoctorData()
-
-  }, [])
+  }, [scheduleFormData])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
 
   const tabRef = useRef<any>(null);
   const tabRef1 = useRef<any>(null);
@@ -96,14 +102,54 @@ const ScheduleDoctor = () => {
   const handleClickTab1: any = () => {
     if (tabRef.current) {
       tabRef.current.click();
+      setValue(1)
     }
   }
   const handleClickTab2: any = () => {
     if (tabRef1.current) {
       tabRef1.current.click()
+      setValue(2)
     }
-
   }
+
+  const handleScheduleForm = (value: any) => {
+    setScheduleFormData(value)
+  }
+
+  const handleScheduleFormDate = ({ date, time }: any) => {
+    setScheduleFormData((prev) => ({
+      ...prev,
+      date,
+      time,
+      doctorId: doctor?.DoctorId,
+      patientId: user._id,
+      fees:doctor?.fees
+    }))
+  }
+
+  const handleSubmit = async() => {
+    try {
+      dispatch(showLoading())
+      const addAppointment = async (credentials: { data: object }) => {
+        return makeApiCall('/doctor/add-appointment', 'POST', credentials);
+      };
+      const {data} = await addAppointment({data:scheduleFormData})
+      console.log(data);
+      const payment = async (credentials:{appointmentId:string, fees:any}) => {
+        return makeApiCall('/payment/stripe', 'POST', credentials);
+      }
+      const response = await payment({ appointmentId:data._id, fees:data.fees})
+      console.log(response.data);
+      window.location.href = response.data.url
+      dispatch(hideLoading())
+    } catch (error) {
+      dispatch(hideLoading())
+      console.log(error);
+      
+    }
+    
+  }
+
   return (
     <React.Fragment>
       <h1 className='font-medium text-2xl mt-2 mb-2 flex justify-start mx-3 tracking-widest'>Schedule</h1>
@@ -111,7 +157,7 @@ const ScheduleDoctor = () => {
 
         <Box sx={{ width: '100%', backgroundColor: 'white', borderRadius: 2 }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tabs value={value} aria-label="basic tabs example">
               <Tab label="Doctor" {...a11yProps(0)} />
               <Tab ref={tabRef} label="Details" {...a11yProps(1)} />
               <Tab ref={tabRef1} label="Time" {...a11yProps(2)} />
@@ -163,10 +209,14 @@ const ScheduleDoctor = () => {
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ScheduleFill onClick={handleClickTab2} />
+            <Suspense fallback={<Loading />}>
+              <ScheduleFill onClick={handleClickTab2} onValue={handleScheduleForm} />
+            </Suspense>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Item Three
+            <Suspense fallback={<Loading />}>
+              <ScheduleTime timeRange={{ time: time }} onClick={()=>handleSubmit()} onValue={handleScheduleFormDate} />
+            </Suspense>
           </TabPanel>
           <TabPanel value={value} index={3}>
             Item Four

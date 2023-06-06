@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, FormControl, RadioGroup, FormControlLabel, Radio, Button, Box } from '@mui/material';
+import { TextField, FormControl, RadioGroup, FormControlLabel, Radio, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { ErrorMessage, useFormik } from 'formik';
 import yupValidation from '../../auth/yupValidation';
 
 
-const ScheduleFill: React.FC<any> = ({ onClick }) => {
-  const [scheduleForm, setScheduleForm] = useState({
-    name: '',
-    age: '',
-    symptoms: '',
-    email: '',
-    mobile: '',
-    gender: ''
-  })
-
+const ScheduleFill: React.FC<any> = ({ onClick, onValue }) => {
+  const [submitted, setSubmitted] = useState(false);
   const initialValues = {
     name: '',
     age: '',
@@ -32,15 +24,18 @@ const ScheduleFill: React.FC<any> = ({ onClick }) => {
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log(values);
-      onClick()
+      onValue(values)
+      setSubmitted(true);
     }
   })
+
+  const handleDialogClose = () => {
+    setSubmitted(false);
+  };
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
       <h1 className='text-3xl font-extrabold mb-10'>Fill the form details to continue</h1>
-
       <form onSubmit={formik.handleSubmit}>
         <Box display={'flex'} gap={2}>
           <TextField
@@ -113,6 +108,17 @@ const ScheduleFill: React.FC<any> = ({ onClick }) => {
         </Box>
         <Button type="submit" variant="contained" color="primary">Submit</Button>
       </form>
+
+      <Dialog open={submitted} onClose={handleDialogClose}>
+        <DialogTitle>Form submitted successfully!</DialogTitle>
+        <DialogContent>
+          <p>Your form has been submitted successfully.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Back to change</Button>
+          <Button onClick={()=>onClick()}>Next</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
 
   );

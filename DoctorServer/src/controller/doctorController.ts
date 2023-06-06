@@ -4,15 +4,17 @@ import { DoctorRepository } from '../repositories/doctor';
 import { DoctorService } from '../service/doctorService';
 import { DoctorModel } from '../models/doctor';
 import { DepartmentModel } from '../models/department';
+import { AppointmentModel } from '../models/appointment';
+import { AppointmentRepository } from '../repositories/appointment';
 
 const doctorAPI = new DoctorApi()
 const docService = new DoctorService()
 const doctorRepo = new DoctorRepository()
+const appointmentRepo = new AppointmentRepository()
 
 const registerDoctor = async (req: Request, res: Response) => {
     try {
         const { name, DOB, sex, about, email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body
-        console.log(req.body);
         const doctor = await doctorRepo.findByEmail(email)
         if (!doctor) {
             const response = await doctorAPI.registerDoctor(email, password, name, role)
@@ -27,8 +29,6 @@ const registerDoctor = async (req: Request, res: Response) => {
             throw new Error('Doctor already exist')
         }
     } catch (error) {
-        console.log(error);
-
         res.status(401).json({ error: error.message });
     }
 }
@@ -55,7 +55,6 @@ const getDoctorById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const doctor = await doctorRepo.findById(id)
-        console.log(id,doctor);
         res.json(doctor)
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -77,10 +76,27 @@ const addDepartment = async (req: Request, res: Response) => {
         const response = await DepartmentModel.create({specialization:department})
         res.json(response)
     } catch (error) {
-        console.log(error);
-        
         res.status(500).json({ error: error.message })
     }
 }
 
-export { registerDoctor, getAllDoctor, getDoctor, getDoctorById, addDepartment, getDepartment }
+const addAppointment = async (req: Request, res: Response)=>{
+    try {
+        const {data} = req.body
+        console.log(data);
+        const response = await AppointmentModel.create(data)
+        res.json(response)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+const updatePayment = async (req: Request, res: Response)=>{
+    try {
+        const {paymentIntent,appointmentId} = req.body
+        await appointmentRepo.updatePaymentStatus(paymentIntent,appointmentId)
+        res.status(200)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+export { registerDoctor, getAllDoctor, getDoctor, getDoctorById, addDepartment, getDepartment, addAppointment, updatePayment }

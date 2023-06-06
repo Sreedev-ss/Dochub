@@ -5,7 +5,7 @@ import cors from 'cors'
 import { serverConfig } from './serverConfig'
 import { httpStatus } from './constants/httpStatus'
 import dotEnv from 'dotenv'
-import doctorApi from './routes/admin'
+import doctorApi from './routes/doctor'
 import bodyParser from 'body-parser'
 dotEnv.config()
 

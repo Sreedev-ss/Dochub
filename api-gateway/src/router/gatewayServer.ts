@@ -6,6 +6,7 @@ const app = express();
 const serverMappings: Record<string, string> = {
     '/auth': 'http://localhost:8001',
     '/doctor': 'http://localhost:8000/doc',
+    '/payment': 'http://localhost:8002'
 };
 
 const determineServerURL = (url: string): string | null => {
@@ -17,6 +18,8 @@ const determineServerURL = (url: string): string | null => {
 
 app.all('/*', async (req: Request, res: Response) => {
     const serverURL = determineServerURL(req.url);
+    console.log(req.url,'requrl');
+    
     if (serverURL) {
         const url = `${serverURL}${req.url}`;
         const config: AxiosRequestConfig = {
@@ -31,7 +34,7 @@ app.all('/*', async (req: Request, res: Response) => {
             const response = await axios(config);
             res.status(response.status).json(response.data);
         } catch (error) {
-            res.status(error.response.status).json(error.response.data);
+            res.status(500).json({message:error.message});
         }
     } else {
         res.status(404).json({ message: 'Server not found' });

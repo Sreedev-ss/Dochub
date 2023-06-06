@@ -15,6 +15,10 @@ app.use(cors())
 app.use(logger('dev'))
 app.use('/',gatewayServer)
 
+app.use((req, res) => {
+    res.send({ code: 404, error: 'Not found' })
+})
+
 app.listen(server.port, () => {
     console.log(`Auth server running on port ${server.port}`)
 })
