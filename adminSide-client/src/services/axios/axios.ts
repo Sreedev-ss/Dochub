@@ -1,17 +1,17 @@
 import axios from 'axios'
 
-const authUrl = "http://localhost:8001/auth"
-// const appointmentUrl = "http://localhost:8002/appointment"
-const docUrl = "http://localhost:8000/doc/doctor"
 
-export const authServer = axios.create({
-        baseURL : `${authUrl}/admin`
-})
+const URL = "http://localhost:3000"
 
-// export const appointmentServer = axios.create({
-//         baseURL: `${appointmentUrl}`
-// })
-
-export const docServer = axios.create({
-        baseURL:`${docUrl}`
-    })
+export const makeApiCall = async (endpoint: string, method: string, data?: any) => {
+        try {
+                const response = await axios({
+                        method,
+                        url: `${URL}${endpoint}`,
+                        data,
+                });
+                return response;
+        } catch (error: any) {
+                throw error.response.data;
+        }
+};

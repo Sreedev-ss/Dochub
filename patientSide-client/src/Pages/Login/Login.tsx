@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            return navigate(-1)
+            return navigate('/')
         }
     }, [isAuthenticated])
 

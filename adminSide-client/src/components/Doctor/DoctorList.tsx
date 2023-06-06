@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { docServer } from '../../services/axios/axios'
+import { makeApiCall } from '../../services/axios/axios'
 import { useDispatch } from 'react-redux'
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice'
 import { Box, Button, IconButton, Menu, MenuItem, Typography } from '@mui/material'
@@ -10,8 +10,11 @@ const DoctorList = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(() => {
+        const allDoctor = async () => {
+            return makeApiCall('/doctor/all-doctor', 'GET');
+        };
         const getDoctor = async () => {
-            const { data }: any = await docServer.get('/all-doctor');
+            const { data }: any = await allDoctor();
             setDoctors(data)
             dispatch(hideLoading())
         }

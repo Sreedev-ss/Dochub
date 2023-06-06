@@ -3,7 +3,7 @@ import { Box, TextField, Button, FormControlLabel, RadioGroup, Radio, Chip, Grid
 import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { format } from 'date-fns';
-import { docServer } from '../../services/axios/axios';
+import { makeApiCall } from '../../services/axios/axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
@@ -46,7 +46,10 @@ const AddDoctorForm = () => {
     const [departments, setDepartments] = useState([])
 
     useEffect(()=>{
-        docServer.get('/get-department').then(({data})=>{
+        const getDepartment = async () => {
+            return makeApiCall('/doctor/get-department', 'GET');
+        };
+        getDepartment().then(({data})=>{
             setDepartments(data)
         })
     },[])
@@ -67,7 +70,10 @@ const AddDoctorForm = () => {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         dispatch(showLoading())
-        docServer.post('/add-doctor', doctor).then(({ data }) => {
+        const addDoctor = async (credentials: {doctor:Doctor}) => {
+            return makeApiCall('/doctor/add-doctor', 'POST', credentials);
+        };
+        addDoctor({doctor}).then(({ data }) => {
             console.log(data);
             dispatch(hideLoading())
             navigate('/admin/doctors')

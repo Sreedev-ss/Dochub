@@ -7,7 +7,7 @@ import { validateEmail, validatePassword } from '../../auth/validations';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
-import { authServer } from '../../services/axios/axios';
+import { makeApiCall } from '../../services/axios/axios';
 import { loginSuccess } from '../../config/Redux/authslice';
 import { showAlert } from '../../config/Redux/alertSlice';
 import { useNavigate } from 'react-router-dom';
@@ -52,7 +52,11 @@ const Login: React.FC = () => {
         }
 
         dispatch(showLoading())
-        authServer.post('/login',{email,password}).then((response)=>{
+        const login = async (credentials: {email: string,password: string}) => {
+            return makeApiCall('/auth/admin/login', 'POST', credentials);
+        };
+
+        login({email,password}).then((response)=>{
             dispatch(hideLoading())
             dispatch(showAlert('SUCCESS FULLY LOGGED IN'))
             dispatch(loginSuccess(response.data))

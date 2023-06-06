@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { docServer } from '../../services/axios/axios'
+import {  makeApiCall } from '../../services/axios/axios'
 import { hideLoading } from '../../config/Redux/loadingSlice'
 
 
@@ -25,7 +25,10 @@ const ViewDoctorDetails = ({ id }: any) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        docServer.get(`/get-doctor-details/${id}`).then(({ data }) => {
+        const getDoctorDetails = async () => {
+            return makeApiCall(`/doctor/get-doctor-details/${id}`, 'GET');
+        };
+        getDoctorDetails().then(({ data }) => {
             dispatch(hideLoading())
             setDoctorData(data)
         })

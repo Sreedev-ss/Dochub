@@ -6,7 +6,7 @@ import './Login.scss'
 import { validateEmail, validatePassword } from '../../auth/validations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { authServer, docServer } from '../../services/axios';
+import {  makeApiCall } from '../../services/axios';
 import { loginFailure, loginSuccess } from '../../config/Redux/authslice';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
 import { showAlert } from '../../config/Redux/alertSlice';
@@ -50,10 +50,17 @@ const LoginPage: React.FC = () => {
 
         dispatch(showLoading())
 
-        authServer.post('/login', { email, password }).then(async (response) => {
+        const login = async (credentials: {email: string,password: string}) => {
+            return makeApiCall('/auth/doctor/login', 'POST', credentials);
+        };
+
+        login({ email, password }).then(async (response) => {
             if (response.status) {
                 try {
-                    const { data } = await docServer.get(`/get-doctor/${response.data.email}`)
+                    const getDoctor = async () => {
+                        return makeApiCall(`/doctor/get-doctor/${response.data.email}`, 'GET');
+                    };
+                    const { data } = await getDoctor()
                     const fullData = { data: data, id: response.data.userId, token: response.data.token }
                     dispatch(hideLoading())
                     dispatch(showAlert('SUCCESS FULLY LOGGED IN'))

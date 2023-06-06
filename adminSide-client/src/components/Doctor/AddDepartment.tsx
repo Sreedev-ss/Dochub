@@ -4,25 +4,28 @@ import Sidebar from '../Common/Sidebar/Sidebar'
 import { Button, TextField } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Sheet, Typography } from '@mui/joy'
-import { docServer } from '../../services/axios/axios'
+import {  makeApiCall } from '../../services/axios/axios'
 import { useNavigate } from 'react-router-dom'
 
 const AddDepartmentForm = () => {
     const [department, setDepartment] = useState<string>('')
-    const [departmentValid, setDepartmentValid] = useState({valid:false,error:''})
+    const [departmentValid, setDepartmentValid] = useState({ valid: false, error: '' })
     const navigate = useNavigate()
     const handleSubmit = () => {
-        if(department == ''){
-            setDepartmentValid({valid:true,error:'This field cannot be empty'})
+        if (department == '') {
+            setDepartmentValid({ valid: true, error: 'This field cannot be empty' })
             return
         }
-        setDepartmentValid({valid:false,error:''})
-        docServer.post('/add-department',{department}).then(({data})=>{
+        setDepartmentValid({ valid: false, error: '' })
+        const addDepartment = async (credentials: { department: string }) => {
+            return makeApiCall('/doctor/add-department', 'POST', credentials);
+        };
+        addDepartment({ department }).then(({ data }) => {
             console.log(data);
             navigate('/admin/doctors')
-        }).catch((err:any)=>{
+        }).catch((err: any) => {
             console.log(err.message);
-            
+
         })
     }
     return (
