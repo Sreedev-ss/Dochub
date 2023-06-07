@@ -11,6 +11,9 @@ class AppointmentRepository {
     async findByDoctorId(doctorId: string): Promise<AppointmentDocument[] | null> {
         return AppointmentModel.find({doctorId}).sort({ _id: -1 }).exec();
     }
+    async findByDoctorIdAndDate(doctorId: string,date:string): Promise<AppointmentDocument[] | null> {
+        return AppointmentModel.find({doctorId,date}).exec();
+    }
 
     async findByEmail(email: string): Promise<AppointmentDocument | null> {
         return AppointmentModel.findOne({ email }).exec();

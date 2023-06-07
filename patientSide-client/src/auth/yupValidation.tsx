@@ -11,7 +11,7 @@ const yupValidation = yup.object().shape({
         .min(1, 'Age must be at least 1')
         .max(100, 'Age must be at most 100'),
     gender: yup.string().required('Select a gender'),
-    symptoms: yup.string().required('Symptoms are required').min(5, 'Symptom must be at least 5 characters')
+    symptoms: yup.string().required('Symptoms are required').min(4, 'Symptom must be at least 4 characters')
         .max(500, 'Symptom must be at most 100 characters'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     mobile: yup.string().matches(/^[0-9]{10}$/, 'Mobile number must be a 10-digit number').required('Mobile number is required'),

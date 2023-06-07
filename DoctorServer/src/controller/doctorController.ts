@@ -12,7 +12,6 @@ const docService = new DoctorService()
 const doctorRepo = new DoctorRepository()
 
 const registerDoctor = async (req: Request, res: Response) => {
-    console.log(req.body);
     try {
         
         const { name, DOB, sex, about, email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor

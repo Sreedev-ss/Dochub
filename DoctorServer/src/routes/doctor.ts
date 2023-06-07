@@ -12,7 +12,8 @@ import {
 import {
     addAppointment,
     updatePayment,
-    getAllAppointment
+    getAllAppointment,
+    getAllAppointmentBydate
 } from '../controller/appointmentController'
 
 app.post('/add-doctor', registerDoctor)
@@ -24,5 +25,6 @@ app.get('/get-department', getDepartment)
 app.post('/add-appointment', addAppointment)
 app.put('/update-payment-status', updatePayment)
 app.get('/all-appointment', getAllAppointment)
+app.post('/all-appointment-bydate', getAllAppointmentBydate)
 
 export default app

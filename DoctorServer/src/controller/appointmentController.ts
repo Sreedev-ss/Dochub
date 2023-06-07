@@ -41,3 +41,15 @@ export const getAllAppointment = async (req: Request, res: Response) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+export const getAllAppointmentBydate = async (req: Request, res: Response) => {
+    try {
+        const {date, dId} = req.body
+        console.log(req.body);
+        
+        const response = await appointmentRepo.findByDoctorIdAndDate(dId,date)
+        res.json(response)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}

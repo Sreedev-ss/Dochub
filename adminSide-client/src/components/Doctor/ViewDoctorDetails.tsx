@@ -37,8 +37,8 @@ const ViewDoctorDetails = ({ id }: any) => {
 
     return (
         <Box sx={{ display: 'flex', backgroundColor: 'white', width: '100%', flexDirection: 'row', gap: 13, paddingX: 20, paddingY: 8, marginTop: 2, borderRadius: 3 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Avatar src='dummyDoctor.jpeg' alt={doctorData?.name} sx={{ width: 100, height: 100, mb: 2 }} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth:200,alignItems: 'center', justifyContent: 'center' }}>
+                <Avatar src={doctorData?.photoURL ? doctorData?.photoURL  :'dummyDoctor.jpeg'} alt={doctorData?.name} sx={{ width: 100, height: 100, mb: 2 }} />
                 <Typography variant="h5">Dr. {doctorData?.name}</Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                     {doctorData?.address}

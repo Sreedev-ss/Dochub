@@ -67,7 +67,7 @@ const webhook = async (req: Request, res: Response) => {
         default:
           break;
       }
-      res.sendStatus(200);
+      res.end();
     } catch (error) {
       console.error('Error handling webhook:', error);
       res.sendStatus(500);

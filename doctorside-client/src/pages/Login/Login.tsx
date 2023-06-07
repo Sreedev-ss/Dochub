@@ -55,12 +55,16 @@ const LoginPage: React.FC = () => {
         };
 
         login({ email, password }).then(async (response) => {
+            console.log(response,'res1111');
+            
             if (response.status) {
                 try {
                     const getDoctor = async () => {
                         return makeApiCall(`/doctor/get-doctor/${response.data.email}`, 'GET');
                     };
                     const { data } = await getDoctor()
+                    console.log(data);
+                    
                     const fullData = { data: data, id: response.data.userId, token: response.data.token }
                     dispatch(hideLoading())
                     dispatch(showAlert('SUCCESS FULLY LOGGED IN'))

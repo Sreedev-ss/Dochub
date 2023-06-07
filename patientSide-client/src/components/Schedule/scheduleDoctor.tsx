@@ -70,7 +70,7 @@ const ScheduleDoctor = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch()
   const { user } = useSelector((state: any) => state.auth)
-  const navigate = useNavigate()
+
   useEffect(() => {
     async function getDoctorData() {
       const doctorServer = async () => {
@@ -97,7 +97,6 @@ const ScheduleDoctor = () => {
 
   const tabRef = useRef<any>(null);
   const tabRef1 = useRef<any>(null);
-  const tabRef2 = useRef<any>(null);
 
   const handleClickTab1: any = () => {
     if (tabRef.current) {
@@ -117,7 +116,7 @@ const ScheduleDoctor = () => {
   }
 
   const handleScheduleFormDate = ({ date, time }: any) => {
-    setScheduleFormData((prev) => ({
+     setScheduleFormData((prev) => ({
       ...prev,
       date,
       time,
@@ -127,11 +126,14 @@ const ScheduleDoctor = () => {
       doctorName:doctor?.name,
       doctorProfile:doctor?.photoURL
     }))
+    dispatch(showLoading())
+    setTimeout(()=>{
+      handleSubmit()
+    },2000)
   }
 
   const handleSubmit = async() => {
     try {
-      dispatch(showLoading())
       const addAppointment = async (credentials: { data: object }) => {
         return makeApiCall('/doctor/add-appointment', 'POST', credentials);
       };
@@ -161,7 +163,6 @@ const ScheduleDoctor = () => {
               <Tab label="Doctor" {...a11yProps(0)} />
               <Tab ref={tabRef} label="Details" {...a11yProps(1)} />
               <Tab ref={tabRef1} label="Time" {...a11yProps(2)} />
-              <Tab ref={tabRef2} label="Payment" {...a11yProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -215,12 +216,10 @@ const ScheduleDoctor = () => {
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Suspense fallback={<Loading />}>
-              <ScheduleTime timeRange={{ time: time }} onClick={()=>handleSubmit()} onValue={handleScheduleFormDate} />
+              <ScheduleTime timeRange={{ time: time }} id={{doctor:doctor?.DoctorId}}  onValue={handleScheduleFormDate} />
             </Suspense>
           </TabPanel>
-          <TabPanel value={value} index={3}>
-            Item Four
-          </TabPanel>
+       
         </Box>
       </div>
 

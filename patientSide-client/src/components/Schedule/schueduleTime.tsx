@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RadioGroup, Radio, FormControlLabel, Typography, Button, FormHelperText } from '@mui/material';
 import { useFormik } from 'formik';
+import { makeApiCall } from '../../services/axios/axios';
 
 interface TimeSlot {
   time: string
@@ -9,20 +10,18 @@ interface TimeSlot {
 interface TimeSlotPickerProps {
   timeRange: TimeSlot;
   onValue: any;
-  onClick:any;
+  id: any;
 }
 
-const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, onValue, onClick }) => {
-
+const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, id, onValue }) => {
   const [scheduleTime, setScheduleTime] = useState({
     date: '',
     time: ''
   })
-
   const generateDates = () => {
     const dates = [];
     const today = new Date();
-    for (let i = 0; i < 4; i++) {
+    for (let i = 1; i < 5; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       dates.push(date);
@@ -47,16 +46,37 @@ const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, onValue, onCli
   const dates = generateDates();
   const timeSlots = generateTimeSlots();
 
-  const validate = (values: { date: string; time: string }) => {
+  const validate = async (values: { date: string; time: string }) => {
     const errors: { date?: string; time?: string } = {};
+    
     if (!values.date) {
       errors.date = 'Select a date';
     }
     if (!values.time) {
       errors.time = 'Select an hour slot';
     }
+    if (values.date) {
+      const getAppointment = async (credentials: { date: string, dId: string }) => {
+        return makeApiCall(`/doctor/all-appointment-bydate`, 'POST', credentials)
+      }
+      const dId = id.doctor
+      const date = values.date
+      const { data } = await getAppointment({ date, dId })
+      console.log(data);
+      
+      for (let i = 0; i < data?.length; i++) {
+        console.log(data[i].time, values.time);
+        if (data[i].time == values.time) {
+          
+          errors.time = 'Slot already booked'
+          
+        } 
+      }
+      return errors
+    }
     return errors;
   };
+
 
   const formik = useFormik({
     initialValues: {
@@ -68,9 +88,23 @@ const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, onValue, onCli
     validateOnBlur: true,
     onSubmit: (values) => {
       onValue(values)
-      onClick()
     }
   })
+
+  function convertTo12HourFormat(timeRange: string): string {
+    const [start, end] = timeRange.split("-");
+
+    const formattedStartTime = formatTime(start);
+    const formattedEndTime = formatTime(end);
+
+    function formatTime(hour: any): string {
+        const meridiem = hour >= 12 ? "PM" : "AM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        return `${formattedHour}${meridiem}`;
+      }
+
+    return `${formattedStartTime} - ${formattedEndTime}`;
+}
 
   return (
     <div>
@@ -95,12 +129,12 @@ const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, onValue, onCli
         <div className='mt-5'>
           <Typography className='flex' variant="h6">Select Hour Slot:</Typography>
           <RadioGroup name="time" value={formik.values.time} onChange={formik.handleChange}>
-            {timeSlots.map((slot:any,index) => (
+            {timeSlots.map((slot: any, index) => (
               <FormControlLabel
                 key={index}
                 value={`${slot.start}-${slot.end}`}
                 control={<Radio />}
-                label={`${slot.start}:00 - ${slot.end}:00`}
+                label={`${convertTo12HourFormat(slot.start+'-'+slot.end)}`}
               />
             ))}
           </RadioGroup>
@@ -109,7 +143,7 @@ const ScheduleTime: React.FC<TimeSlotPickerProps> = ({ timeRange, onValue, onCli
           )}
         </div>
 
-        <Button type="submit">Next</Button>
+        <Button type="submit" >Next</Button>
       </form>
     </div>
   );
