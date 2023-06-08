@@ -89,7 +89,7 @@ const sidebarItems: Ikeys[] = [{
         <div>
           <div className="flex items-center space-x-2" onClick={showLogout}>
             <span className="flex flex-col">
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-sm font-medium hidden sm:block md:block text-gray-900">
                 {userData.isAuthenticated ? userData?.user?.name?.toUpperCase() : 'Please Login'}
               </span>
             </span>

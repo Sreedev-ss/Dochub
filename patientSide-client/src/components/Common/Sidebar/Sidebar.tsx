@@ -9,9 +9,14 @@ import {
     MedicalInformationOutlined,
     BookOnlineOutlined
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+
+
 
 const Sidebar = () => {
+
+const location = useLocation()
+
     interface Ikeys {
         name: string,
         link: string,
@@ -60,7 +65,7 @@ const Sidebar = () => {
                 <nav className="flex-1 mt-10 mx-10 " >
                     <ul className='space-y-4'>
                         {sidebarItems.map((items: any) => {
-                            return <li key={items.name}>
+                            return <li key={items.name} className={location.pathname === items.link ? 'active' : ''}>
                                 <Link to={items.link} className=''>
                                     <a className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700" >
                                         {items.icon}

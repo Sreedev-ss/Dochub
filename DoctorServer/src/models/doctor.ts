@@ -15,7 +15,7 @@ interface Doctor {
     DOB: string;
     gender: string;
     about: string;
-
+    approved:boolean
 }
 
 interface DoctorDocument extends Doctor, Document {}
@@ -68,6 +68,11 @@ const DoctorSchema = new Schema<DoctorDocument>({
     fees: {
         type: Number,
         required: true,
+    },
+    approved:{
+        type:Boolean,
+        default:false,
+        required:true
     }
 });
 

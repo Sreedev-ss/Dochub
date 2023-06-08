@@ -4,8 +4,6 @@ import { DoctorRepository } from '../repositories/doctor';
 import { DoctorService } from '../service/doctorService';
 import { DoctorModel } from '../models/doctor';
 import { DepartmentModel } from '../models/department';
-import { AppointmentModel } from '../models/appointment';
-import { AppointmentRepository } from '../repositories/appointment';
 
 const doctorAPI = new DoctorApi()
 const docService = new DoctorService()
@@ -14,13 +12,13 @@ const doctorRepo = new DoctorRepository()
 const registerDoctor = async (req: Request, res: Response) => {
     try {
         
-        const { name, DOB, sex, about, email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor
+        const {name, DOB, sex, about, approved ,email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor
         const doctor = await doctorRepo.findByEmail(email)
         if (!doctor) {
             const response = await doctorAPI.registerDoctor(email, password, name, role)
             if (response) {
                 const Id = response.data._id
-                const addDoctor = await docService.addDoctor(Id, email, mobile, specialization, address, photoURL, name, DOB, sex, about, fees, worktime)
+                const addDoctor = await docService.addDoctor(Id, email, mobile, specialization, address, photoURL, name, DOB, sex, about, fees, worktime,approved)
                 res.json(addDoctor)
             } else {
                 throw new Error('Error adding doctor')
@@ -35,7 +33,7 @@ const registerDoctor = async (req: Request, res: Response) => {
 
 const getAllDoctor = async (req: Request, res: Response) => {
     try {
-        const doctor = await DoctorModel.find({})
+        const doctor = await DoctorModel.find({approved:true})
         res.json(doctor)
     } catch (error) {
         res.status(500).json({ error: error.message });

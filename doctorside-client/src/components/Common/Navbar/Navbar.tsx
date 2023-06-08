@@ -13,7 +13,6 @@ const Navbar = () => {
     const showLogout = () => {
         setLogoutDiv(!logoutDiv)
     }
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const handleLogout = () => {
@@ -43,35 +42,26 @@ const Navbar = () => {
                     </a>
                 </nav>
                 <div>
-                   <div className="flex items-center space-x-2" onClick={showLogout}>
-                   <span className="flex ">
-                        <span className="text-sm font-medium text-gray-900">
-                            {userData.isAuthenticated ? `Dr. ${userData.user?.data?.name.toUpperCase()}` : 'Please Login'}
+                    <div className="flex items-center space-x-2" onClick={showLogout}>
+                        <span className="flex ">
+                            <span className="text-sm font-medium hidden sm:block md:block text-gray-900">
+                                {userData.isAuthenticated && `Dr. ${userData.user?.data?.name.toUpperCase()}` }
+                            </span>
                         </span>
-                    </span>
-                  
+
                         {userData.isAuthenticated ?
-                            userData?.user?.data?.photoURL == "" ? <Avatar sx={{ backgroundColor: 'black' }}>{userData.user?.data?.name.slice(0, 1)}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData?.user?.data?.photoURL } /> :
+                            userData?.user?.data?.photoURL == "" ? <Avatar sx={{ backgroundColor: 'black' }}>{userData.user?.data?.name.slice(0, 1)}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData?.user?.data?.photoURL} /> :
                             <img className="inline-block w-10 h-10 rounded-full" src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" />}
-                   </div>
+                    </div>
                     {logoutDiv && <div className='absolute p-1 border-2 top-16 bg-gray-100'>
 
-                        {userData.isAuthenticated ? <span className="cursor-pointer text-sm font-medium text-gray-900"
+                        <span className="cursor-pointer text-sm font-medium text-gray-900"
                             onClick={handleLogout}
                         >
                             Logout
-                        </span> :
-                            <><span className="text-sm font-medium text-gray-900 cursor-pointer"
-                                onClick={() => navigate('/doctor/login')}
-                            >
-                                Login
-                            </span><br /><span className="text-sm font-medium text-gray-900 cursor-pointer"
-                                onClick={() => navigate('/doctor/signup')}
-                            >
-                                    Signup
-                                </span></>
+                        </span>
 
-                        }
+
 
                     </div>}
                 </div>

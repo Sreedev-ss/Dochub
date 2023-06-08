@@ -5,7 +5,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import './Login.scss'
 import { validateEmail, validatePassword } from '../../auth/validations';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {  makeApiCall } from '../../services/axios';
 import { loginFailure, loginSuccess } from '../../config/Redux/authslice';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            return navigate(-1)
+            return navigate('/doctor')
         }
     }, [isAuthenticated])
 
@@ -129,25 +129,29 @@ const LoginPage: React.FC = () => {
                                     ),
                                 }}
                             />
+                            <div className="flex flex-col">
                             <Button
-                                className='btnSubmit rounded-3xl w-32'
+                                className='btnSubmit rounded-3xl '
                                 type="submit"
                                 variant="contained"
                                 style={{ margin: theme.spacing(3, 0) }}
                             >
                                 Sign In
                             </Button>
+                            <Link to='/doctor/add-doctor'>
+                            <span
+                                className='btnApply rounded-3xl'
+                                style={{ margin: theme.spacing(3, 0),color:'#508df6' }}
+                                
+                            >
+                                Apply for doctor
+                            </span>
+                            </Link>
+                            </div>
                         </form>
 
                     </Container>
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                    <img
-                        src="/doctor_illustration.avif"
-                        alt="Doctor Illustration"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                </Grid> */}
             </Grid>
         </ThemeProvider>
     );

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Box, TextField, Button, FormControlLabel, RadioGroup, Radio, Chip, Grid, FormControl, InputLabel, Select, MenuItem, OutlinedInput, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants, InputAdornment, IconButton } from '@mui/material'
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { Box, TextField, Button, FormControlLabel, RadioGroup, Radio, FormControl, InputLabel, Select, MenuItem, OutlinedInput, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants, InputAdornment, IconButton } from '@mui/material'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { format } from 'date-fns';
 import { cloudinaryUpload, makeApiCall } from '../../services/axios/axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { doctorSchema } from '../../auth/yupValidation';
-import { JSX } from 'react/jsx-runtime';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
@@ -46,7 +44,8 @@ const AddDoctorForm = () => {
             worktime: '',
             email: '',
             password: '',
-            cpassword: ''
+            cpassword: '',
+            approved: true
         },
         validationSchema: doctorSchema,
         validateOnChange: true,
@@ -167,37 +166,16 @@ const AddDoctorForm = () => {
 
     return (
         <Box sx={{ display: 'flex', marginTop: 2, paddingY: 3, backgroundColor: 'white', width: '100%', justifyContent: 'center' }}>
-             <div className="w-1/2 bg-white p-8">
-        <h1 className="text-2xl font-bold mb-4">Add Doctor</h1>
-        <p className="text-gray-700">
-          Welcome to the Add doctor Page! Here, you can manage doctors and their information. Use the
-          form on the right to add new doctors or update existing ones.
-        </p>
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Image Gallery</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <img
-              src="/imgGallery1.jpeg"
-              alt="Doctor 1"
-              className="w-full h-auto"
-            />
-            <img
-              src="/imgGallery3.jpeg"
-              alt="Doctor 2"
-              className="w-full h-auto"
-            />
-            <img
-              src="/imgGallery2.jpeg"
-              alt="Doctor 3"
-              className="w-full h-auto"
-            />
-          </div>
-        </div>
-        
-      </div>
-            <Box sx={{ maxWidth: 1000, marginLeft:10 }}>
+            <Box sx={{ maxWidth: 1000, paddingX: 2 }}>
+                <div className=" bg-white p-8 flex flex-col items-center">
+                    <h1 className="text-2xl font-bold mb-4">Add Doctor</h1>
+                    <p className="text-gray-700 text-center">
+                        Welcome to the Add doctor Page! Here, you can manage doctors and their information. Use the
+                        form on below to add new doctors.
+                    </p>
+                </div>
                 <form onSubmit={formik.handleSubmit}>
-                    <Box display={'flex'} gap={2}>
+                    <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' } }} gap={2}>
                         <TextField name='name'
                             label="Name"
                             onChange={formik.handleChange}
@@ -248,7 +226,7 @@ const AddDoctorForm = () => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.address && Boolean(formik.errors.address)}
                         helperText={formik.touched.address && formik.errors.address} />
-                    <Box display={'flex'} gap={2}>
+                    <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' } }} gap={2}>
                         <TextField name='email'
                             onChange={formik.handleChange}
                             value={formik.values.email}
@@ -268,7 +246,7 @@ const AddDoctorForm = () => {
                             error={formik.touched.mobile && Boolean(formik.errors.mobile)}
                             helperText={formik.touched.mobile && formik.errors.mobile} />
                     </Box>
-                    <Box display={'flex'} gap={2}>
+                    <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' } }} gap={2}>
                         <TextField name='password'
                             onChange={formik.handleChange}
                             value={formik.values.password}
@@ -296,7 +274,7 @@ const AddDoctorForm = () => {
                             margin="normal"
                             onBlur={formik.handleBlur}
                             error={formik.touched.cpassword && Boolean(formik.errors.cpassword)}
-                            helperText={formik.touched.cpassword && formik.errors.cpassword} 
+                            helperText={formik.touched.cpassword && formik.errors.cpassword}
                             type={showcPassword ? 'text' : 'password'}
                             InputProps={{
                                 endAdornment: (
@@ -308,7 +286,7 @@ const AddDoctorForm = () => {
                                 ),
                             }} />
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }} gap={3}>
+                    <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: '15px' }} gap={3}>
                         <div className='flex flex-col gap-1'>
                             {formik.touched.sex && formik.errors.sex && <p className='text-[#d32f2f] text-xs'>{formik.errors.worktime}</p>}
                             <RadioGroup name="sex" onChange={formik.handleChange} value={formik.values.sex}>

@@ -9,12 +9,9 @@ export const stateSlice:any = createSlice({
     reducers:{
         updateState:(state,action) => {
             state.currentState = action.payload
-        },
-        updateIndex:(state,action) => {
-            state.currentIndex = action.payload
         }
     }
 })
 
-export const {updateState, updateIndex} = stateSlice.actions;
+export const {updateState} = stateSlice.actions;
 export default stateSlice.reducer;

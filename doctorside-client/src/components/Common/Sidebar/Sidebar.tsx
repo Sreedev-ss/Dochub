@@ -8,12 +8,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { BookOnlineOutlined, LocalHospital, ChatOutlined, Home, MedicalInformationOutlined, PersonalVideoOutlined } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { updateIndex, updateState } from '../../../config/Redux/stateSlice';
+import { updateState } from '../../../config/Redux/stateSlice';
 
 const Sidebar = () => {
-    const { currentState, currentIndex } = useSelector((state: any) => state.state)
+    const { currentState } = useSelector((state: any) => state.state)
     const dispatch = useDispatch()
     const toggleDrawer =
         (open: boolean) =>
@@ -30,9 +30,8 @@ const Sidebar = () => {
 
             };
 
-    const handleClick = (index: any) => {
-        dispatch(updateIndex(index))
-    };
+
+            const location = useLocation()
 
     interface Ikeys {
         name: string,
@@ -92,8 +91,8 @@ const Sidebar = () => {
                 {sidebarItems.map((items: any, index: number) => (
                     <List key={index} sx={{ marginTop: 0, paddingTop: 5 }}>
                         <Link to={items.link}>
-                            <ListItem disablePadding onClick={() => handleClick(index)} >
-                                <ListItemButton sx={{ backgroundColor: currentIndex === index ? 'ButtonShadow' : '' }} >
+                            <ListItem disablePadding  >
+                                <ListItemButton sx={{ backgroundColor: location.pathname === items.link ? 'ButtonShadow' : '' }} >
                                     <ListItemIcon>
                                         {items.icon}
                                     </ListItemIcon>
