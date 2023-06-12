@@ -15,10 +15,10 @@ interface Doctor {
     DOB: string;
     gender: string;
     about: string;
-    approved:boolean
+    approved: boolean
 }
 
-interface DoctorDocument extends Doctor, Document {}
+interface DoctorDocument extends Doctor, Document { }
 
 const DoctorSchema = new Schema<DoctorDocument>({
     email: {
@@ -40,19 +40,19 @@ const DoctorSchema = new Schema<DoctorDocument>({
     photoURL: {
         type: String,
     },
-    name: { 
+    name: {
         type: String,
-        required: true 
+        required: true
     },
-    gender: { 
-        type: String, 
-        required: true 
+    gender: {
+        type: String,
+        required: true
     },
-    about: { 
-        type: String, 
-        requied: true 
+    about: {
+        type: String,
+        requied: true
     },
-    DOB:{
+    DOB: {
         type: String,
         required: true,
     },
@@ -60,21 +60,25 @@ const DoctorSchema = new Schema<DoctorDocument>({
         type: String,
         required: true,
     },
-   worktime: {
-        type:String,
+    worktime: {
+        type: String,
         required: true,
-        default:'normal'
-   },
+        default: 'normal'
+    },
     fees: {
         type: Number,
         required: true,
     },
-    approved:{
-        type:Boolean,
-        default:false,
-        required:true
+    approved: {
+        type: Boolean,
+        default: false,
+        required: true
     }
-});
+}
+    ,
+    {
+        timestamps: true
+    });
 
 const DoctorModel = db.model<DoctorDocument>('Doctor', DoctorSchema);
 

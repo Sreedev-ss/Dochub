@@ -1,5 +1,5 @@
 import express from 'express'
-const app = express.Router()
+import { authenticateToken } from '../service/jwtVerify'
 import {
     registerDoctor,
     getAllDoctor,
@@ -7,6 +7,8 @@ import {
     getDoctorById,
     addDepartment,
     getDepartment,
+    getDoctorRequest,
+    searchDoctor
 } from '../controller/doctorController'
 
 import {
@@ -15,11 +17,16 @@ import {
     getAllAppointment,
     getAllAppointmentBydate
 } from '../controller/appointmentController'
+const app = express.Router()
+
+
 
 app.post('/add-doctor', registerDoctor)
+app.get('/search-doctor',searchDoctor)
 app.get('/all-doctor', getAllDoctor)
 app.get('/get-doctor/:email', getDoctor)
 app.get('/get-doctor-details/:id', getDoctorById)
+app.get('/get-doctor-requests', getDoctorRequest)
 app.post('/add-department', addDepartment)
 app.get('/get-department', getDepartment)
 app.post('/add-appointment', addAppointment)

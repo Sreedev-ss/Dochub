@@ -1,6 +1,7 @@
 import { Request, Response, response } from 'express';
 import { AppointmentModel } from '../models/appointment';
 import { AppointmentRepository } from '../repositories/appointment';
+import RequestDefenition from '../definition';
 
 const appointmentRepo = new AppointmentRepository()
 
@@ -24,13 +25,12 @@ export const updatePayment = async (req: Request, res: Response) => {
     }
 }
 
-export const getAllAppointment = async (req: Request, res: Response) => {
+export const getAllAppointment = async (req: RequestDefenition, res: Response) => {    
     try {
         const user = req.query.role
         const id:string = req.query.id as string      
         if(user == 'patient'){
             const response = await appointmentRepo.findByPatientId(id)
-            console.log(response);
             res.json(response)
         } else{            
             const response = await appointmentRepo.findByDoctorId(id)
@@ -45,8 +45,6 @@ export const getAllAppointment = async (req: Request, res: Response) => {
 export const getAllAppointmentBydate = async (req: Request, res: Response) => {
     try {
         const {date, dId} = req.body
-        console.log(req.body);
-        
         const response = await appointmentRepo.findByDoctorIdAndDate(dId,date)
         res.json(response)
     } catch (error) {

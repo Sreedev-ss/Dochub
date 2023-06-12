@@ -77,6 +77,7 @@ const Login: React.FC = () => {
                     return makeApiCall('/auth/patient/login', 'POST', credentials);
                 };
                 login({ IdToken: IdToken }).then((response) => {
+                    localStorage.setItem('token',response.data.token)
                     dispatch(hideLoading())
                     dispatch(loginSuccess(response.data.userId))
                     dispatch(fetchUserDetails(response.data.userId))

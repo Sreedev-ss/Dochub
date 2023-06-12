@@ -6,7 +6,9 @@ interface Patient {
   email: string;
   profileURL: string;
   blocked: boolean;
-  password:string
+  password:string;
+  isValid:boolean;
+  verificationCode:string
 }
 interface PatientDocument extends Patient, Document {
     id: any;
@@ -29,6 +31,13 @@ const patientSchema = new Schema<Patient>({
     required: true,
   },
   password: {
+    type:String
+  },
+  isValid:{
+    type:Boolean,
+    default:false,
+  },
+  verificationCode: {
     type:String
   }
 });

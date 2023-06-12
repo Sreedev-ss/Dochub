@@ -14,9 +14,9 @@ const Home = () => {
       <ErrorBoundary>
         <Navbar />
       </ErrorBoundary>
-      <div className="mt-2 flex flex-grow">
+      <div className="mt-2 lg:flex lg:flex-grow">
         <Sidebar />
-        <div className="flex-grow mx-2">
+        <div className="xs:flex md:flex-grow mx-2">
           <ErrorBoundary>
             <HomeBanner />
           </ErrorBoundary>

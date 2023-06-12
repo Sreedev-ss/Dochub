@@ -11,14 +11,18 @@ import { doctorSchema } from '../../auth/yupValidation';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
+import { io, Socket } from 'socket.io-client';
+import { showAlert } from '../../config/Redux/alertSlice';
+
+const socket: Socket = io('http://localhost:8080'); 
 
 const AddDoctorForm = () => {
+   
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
     const [departments, setDepartments] = useState([])
-
-    useEffect(() => {
+    
+    useEffect(() => {        
         const getDepartment = async () => {
             return makeApiCall('/doctor/get-department', 'GET');
         };
@@ -72,7 +76,6 @@ const AddDoctorForm = () => {
                     dispatch(hideLoading())
 
                 }
-                console.log(formik.values);
                 handleSubmit(formik.values)
             } catch (error: any) {
                 console.log(error);
@@ -88,9 +91,10 @@ const AddDoctorForm = () => {
         };
         addDoctor({ doctor }).then(() => {
             dispatch(hideLoading())
+            socket.emit('approveDoctorRequest');
             navigate('/doctor/login')
         }).catch((error: any) => {
-            console.log(error.message);
+            dispatch(showAlert(error?.message))
             dispatch(hideLoading())
         })
     };

@@ -91,7 +91,6 @@ const Sidebar = () => {
                         </Link>
                         <Divider />
                     </List>
-
                 ))}
             </List>
         </Box>

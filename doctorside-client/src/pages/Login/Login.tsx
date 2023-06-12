@@ -6,8 +6,8 @@ import './Login.scss'
 import { validateEmail, validatePassword } from '../../auth/validations';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import {  makeApiCall } from '../../services/axios';
-import { loginFailure, loginSuccess } from '../../config/Redux/authslice';
+import { makeApiCall } from '../../services/axios';
+import { fetchUserDetails, loginFailure, loginSuccess } from '../../config/Redux/authslice';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
 import { showAlert } from '../../config/Redux/alertSlice';
 
@@ -50,33 +50,17 @@ const LoginPage: React.FC = () => {
 
         dispatch(showLoading())
 
-        const login = async (credentials: {email: string,password: string}) => {
+        const login = async (credentials: { email: string, password: string }) => {
             return makeApiCall('/auth/doctor/login', 'POST', credentials);
         };
 
         login({ email, password }).then(async (response) => {
-            console.log(response,'res1111');
-            
-            if (response.status) {
-                try {
-                    const getDoctor = async () => {
-                        return makeApiCall(`/doctor/get-doctor/${response.data.email}`, 'GET');
-                    };
-                    const { data } = await getDoctor()
-                    console.log(data);
-                    
-                    const fullData = { data: data, id: response.data.userId, token: response.data.token }
-                    dispatch(hideLoading())
-                    dispatch(showAlert('SUCCESS FULLY LOGGED IN'))
-                    dispatch(loginSuccess(fullData))
-                    navigate('/doctor')
-                } catch (error: any) {
-                    const errObj = {
-                        message: error?.message
-                    }
-                    throw errObj
-                }
-            }
+            localStorage.setItem('token', response.data.token)
+            dispatch(hideLoading())
+            dispatch(showAlert('SUCCESS FULLY LOGGED IN'))
+            dispatch(loginSuccess(response.data.email))
+            dispatch(fetchUserDetails(response.data.email))
+            navigate('/doctor')
 
         }).catch((err: any) => {
             dispatch(showAlert(err.message))
@@ -130,23 +114,23 @@ const LoginPage: React.FC = () => {
                                 }}
                             />
                             <div className="flex flex-col">
-                            <Button
-                                className='btnSubmit rounded-3xl '
-                                type="submit"
-                                variant="contained"
-                                style={{ margin: theme.spacing(3, 0) }}
-                            >
-                                Sign In
-                            </Button>
-                            <Link to='/doctor/add-doctor'>
-                            <span
-                                className='btnApply rounded-3xl'
-                                style={{ margin: theme.spacing(3, 0),color:'#508df6' }}
-                                
-                            >
-                                Apply for doctor
-                            </span>
-                            </Link>
+                                <Button
+                                    className='btnSubmit rounded-3xl '
+                                    type="submit"
+                                    variant="contained"
+                                    style={{ margin: theme.spacing(3, 0) }}
+                                >
+                                    Sign In
+                                </Button>
+                                <Link to='/doctor/add-doctor'>
+                                    <span
+                                        className='btnApply rounded-3xl'
+                                        style={{ margin: theme.spacing(3, 0), color: '#508df6' }}
+
+                                    >
+                                        Apply for doctor
+                                    </span>
+                                </Link>
                             </div>
                         </form>
 

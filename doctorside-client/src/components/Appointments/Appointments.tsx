@@ -30,7 +30,7 @@ const appointments = () => {
         async function getAllAppointment() {
             try {
                 const getAppointment = async () => {
-                    return makeApiCall(`/doctor/all-appointment?id=${encodeURIComponent(user.data.DoctorId)}&role=${encodeURIComponent('doctor')}`, 'GET');
+                    return makeApiCall(`/doctor/all-appointment?id=${encodeURIComponent(user.DoctorId)}&role=${encodeURIComponent('doctor')}`, 'GET');
                 };
                 const { data } = await getAppointment()
                 setAppointment(data)

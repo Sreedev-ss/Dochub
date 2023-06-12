@@ -5,9 +5,10 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const alert = () => {
     const alertData = useSelector((state:any) => state.alert)
+    console.log(alertData);
     
     if(alertData?.show){
-        const message = alertData?.message?.split('/')[1]?.split(')')[0]?.split('-')?.join(...[' '])
+        const message = alertData?.message
         toast.error(`${message}`);
     }
     

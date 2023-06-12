@@ -12,10 +12,12 @@ const Doctor = () => {
   dispatch(hideAlert())
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
-      <div className="mt-2 flex flex-grow">
+      <ErrorBoundary>
+        <Navbar />
+      </ErrorBoundary>
+      <div className="mt-2 lg:flex lg:flex-grow">
         <Sidebar />
-        <div className="flex-grow mx-2">
+        <div className="xs:flex md:flex-grow mx-2">
           <ErrorBoundary>
             <DoctorList />
           </ErrorBoundary>

@@ -7,9 +7,17 @@ import { httpStatus } from './constants/httpStatus'
 import dotEnv from 'dotenv'
 import doctorApi from './routes/doctor'
 import bodyParser from 'body-parser'
+import http from 'http';
+import { Server } from 'socket.io';
+import socketConnection from './realtime-socket/socket'
+
+const app = express();
+const serverRealtime = http.createServer(app);
+
 dotEnv.config()
 
-const app = express()
+socketConnection(serverRealtime)
+
 const server = serverConfig()
 const httpMsg = httpStatus()
 
@@ -20,7 +28,12 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
-app.use(`${server.baseUrl}/doctor`,doctorApi)
+app.use(`${server.baseUrl}/doctor`, doctorApi)
+
+
+serverRealtime.listen(8080, () => {
+    console.log(`Realtime server running on port 8080`)
+})
 
 app.use((req, res) => {
     res.send({ code: 404, error: httpMsg[404] })

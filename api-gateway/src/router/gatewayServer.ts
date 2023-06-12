@@ -18,14 +18,15 @@ const determineServerURL = (url: string): string | null => {
 
 app.all('/*', async (req: Request, res: Response) => {
     const serverURL = determineServerURL(req.url);
-    console.log(req.url,'requrl');
-    
     if (serverURL) {
         const url = `${serverURL}${req.url}`;
         const config: AxiosRequestConfig = {
             method: req.method as AxiosRequestConfig['method'],
             url,
             data: req.body,
+            headers:{
+                Authorization:req.headers?.authorization
+            }
         };
         console.log(config);
 
@@ -33,7 +34,8 @@ app.all('/*', async (req: Request, res: Response) => {
             const response = await axios(config);
             res.status(response.status).json(response.data);
         } catch (error) {
-            res.status(500).json({message:error.message});
+
+            res.status(500).json({message:error?.response?.data});
         }
     } else {
         res.status(404).json({ message: 'Server not found' });
@@ -41,3 +43,4 @@ app.all('/*', async (req: Request, res: Response) => {
 });
 
 export default app
+

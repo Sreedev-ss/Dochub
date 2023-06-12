@@ -4,4 +4,8 @@
 }
 .sidebar .active {
   background-color: rgba(0, 0, 0, 0.061);
+}
+
+.mSidebar .active {
+  background-color: rgba(0, 0, 0, 0.061);
 }/*# sourceMappingURL=Sidebar.css.map */

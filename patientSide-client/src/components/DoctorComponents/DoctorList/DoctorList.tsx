@@ -25,11 +25,11 @@ const DoctorList = () => {
     return (
         <React.Fragment>
                 <div className='doctor overflow-hidden w-screen md:w-full' >
-                    <h1 className='font-medium text-2xl mt-2 flex justify-start mx-3 tracking-widest'>Doctors</h1>
+                    <h1 className='font-medium text-2xl flex justify-start mx-3 tracking-widest'>Doctors</h1>
                     {doctors.length === 0 &&
                         <div className='mt-10 '><h1 className="text-2xl">No doctors found</h1></div>}
                     {categories.map(category => (
-                        <div key={category} className="doctorList  h-44 p-5 gap-10 rounded-lg flex items-center bg-white ml-1 mr-3 mt-3">
+                        <div key={category} className="doctorList h-44 p-5 gap-10 rounded-lg flex items-center bg-white ml-1 mr-3 mt-3">
                             <div className='flex flex-col w-24 align-middle justify-center items-center'>
                                 <h1 className='mx-7 text-xl font-medium'>{category}</h1>
                                 <button className='border w-20 rounded-lg hover:bg-orange-200 hover:transition-all text-sm text-orange-500 border-orange-200 bg-transparent'>View all</button>

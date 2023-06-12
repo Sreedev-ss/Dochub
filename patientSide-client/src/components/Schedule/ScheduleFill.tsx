@@ -37,7 +37,7 @@ const ScheduleFill: React.FC<any> = ({ onClick, onValue }) => {
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
       <h1 className='text-3xl font-extrabold mb-10'>Fill the form details to continue</h1>
       <form onSubmit={formik.handleSubmit}>
-        <Box display={'flex'} gap={2}>
+        <Box sx={{display:'flex',flexDirection: { xs: 'column', md: 'row' }}} gap={2}>
           <TextField
             label='Name'
             name='name'
@@ -73,7 +73,7 @@ const ScheduleFill: React.FC<any> = ({ onClick, onValue }) => {
             error={formik.touched.symptoms && Boolean(formik.errors.symptoms)}
             helperText={formik.touched.symptoms && formik.errors.symptoms} />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }} gap={3}>
+        <Box sx={{ display: 'flex',flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: '15px' }} gap={3}>
           <TextField
             name='email'
             label="Email"

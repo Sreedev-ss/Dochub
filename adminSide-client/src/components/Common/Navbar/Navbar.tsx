@@ -5,7 +5,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,8 +16,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { logoutSuccess } from '../../../config/Redux/authslice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateState } from '../../../config/Redux/stateSlice';
+import { io, Socket } from 'socket.io-client';
+import { updateCount } from '../../../config/Redux/notificationSlice';
+import { makeApiCall } from '../../../services/axios/axios';
+import { useState } from 'react';
+import { Button } from '@mui/material';
+import { format } from 'timeago.js'
+
+const socket: Socket = io('http://localhost:8080');
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -60,8 +67,56 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+interface Doctor {
+    email: string,
+    DoctorId: string,
+    specialization: string,
+    fees: number,
+    mobile: number,
+    address: string,
+    photoURL: string,
+    worktime: string,
+    name: string;
+    DOB: string;
+    gender: string;
+    about: string;
+    approved:boolean,
+    createdAt:string
+}
+
+
 const Navbar = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [open, setOpen] = useState(false)
+    const { count } = useSelector((state: any) => state.notification)
+    const [doctorReq, setDoctorReq] = useState([])
+
+    React.useEffect(() => {
+        socket.on('count', (updatedCount: number) => {      
+            dispatch(updateCount(updatedCount))
+        });
+        return () => {
+            socket.disconnect();
+        };
+
+    }, []);
+
+
+    React.useEffect(() => {
+        const getDoctorReq = async () => {
+            const doctorReq = async () => {
+                return makeApiCall('/doctor/get-doctor-requests', 'GET');
+            };
+            const { data } = await doctorReq()
+            setDoctorReq(data)
+        }
+        getDoctorReq()
+    }, [count])
+
+    const openNotification = () => {
+        setOpen(!open)
+    }
+
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
 
@@ -87,18 +142,18 @@ const Navbar = () => {
         dispatch(logoutSuccess())
     }
 
-    const handleSidebar = (open: boolean) => 
-            (event: React.KeyboardEvent | React.MouseEvent) => {
-                if (
-                    event.type === 'keydown' &&
-                    ((event as React.KeyboardEvent).key === 'Tab' ||
-                        (event as React.KeyboardEvent).key === 'Shift')
-                ) {
-                    return;
-                }
+    const handleSidebar = (open: boolean) =>
+        (event: React.KeyboardEvent | React.MouseEvent) => {
+            if (
+                event.type === 'keydown' &&
+                ((event as React.KeyboardEvent).key === 'Tab' ||
+                    (event as React.KeyboardEvent).key === 'Shift')
+            ) {
+                return;
+            }
 
-                dispatch(updateState(open))
-    }
+            dispatch(updateState(open))
+        }
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
@@ -157,7 +212,7 @@ const Navbar = () => {
                     aria-label="show 0 new notifications"
                     color="inherit"
                 >
-                    <Badge badgeContent={0} color="error">
+                    <Badge badgeContent={count} color="error">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -180,34 +235,34 @@ const Navbar = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar className='navbar' position="static" sx={{backgroundColor:'white', boxShadow:'none'}}>
+            <AppBar className='navbar' position="static" sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
                 <Toolbar>
                     <IconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
-                        sx={{ mr: 2, color:'#4b5563' }}
+                        sx={{ mr: 2, color: '#4b5563' }}
                         onClick={handleSidebar(true)}
                     >
                         <MenuIcon />
                     </IconButton>
-                        <span className="text-black text-lg">
-                            Doc<span className="text-blue-500 text-lg">Hub - Admin</span>
-                        </span>
-                    <Search sx={{color:'black'}}>
-                        <SearchIconWrapper sx={{color:'black'}}>
-                            <SearchIcon sx={{color:'black'}}/>
+                    <span className="text-black text-lg">
+                        Doc<span className="text-blue-500 text-lg">Hub - Admin</span>
+                    </span>
+                    <Search sx={{ color: 'black' }}>
+                        <SearchIconWrapper sx={{ color: 'black' }}>
+                            <SearchIcon sx={{ color: 'black' }} />
                         </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
-                            sx={{color:'black'}}
+                            sx={{ color: 'black' }}
                         />
                     </Search>
-                    <Box sx={{ flexGrow: 1 ,color:'black'}} />
-                    <Box sx={{ display: { xs: 'none', md: 'flex' },color:'black' }}>
-                        <IconButton size="large" aria-label="show 4 new mails" sx={{color:'#4b5563'}}>
+                    <Box sx={{ flexGrow: 1, color: 'black' }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, color: 'black' }}>
+                        <IconButton size="large" aria-label="show 4 new mails" sx={{ color: '#4b5563' }}>
                             <Badge badgeContent={0} color="error">
                                 <MailIcon />
                             </Badge>
@@ -215,9 +270,10 @@ const Navbar = () => {
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
-                            sx={{color:'#4b5563'}}
+                            sx={{ color: '#4b5563' }}
+                            onClick={openNotification}
                         >
-                            <Badge badgeContent={0} color="error">
+                            <Badge badgeContent={count} color="error" >
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
@@ -228,7 +284,7 @@ const Navbar = () => {
                             aria-controls={menuId}
                             aria-haspopup="true"
                             onClick={handleProfileMenuOpen}
-                            sx={{color:'#4b5563'}}
+                            sx={{ color: '#4b5563' }}
                         >
                             <AccountCircle />
                         </IconButton>
@@ -240,12 +296,39 @@ const Navbar = () => {
                             aria-controls={mobileMenuId}
                             aria-haspopup="true"
                             onClick={handleMobileMenuOpen}
-                            sx={{color:'#4b5563'}}
+                            sx={{ color: '#4b5563' }}
                         >
                             <MoreIcon />
                         </IconButton>
                     </Box>
                 </Toolbar>
+                {open && <div className="popup-container" onClick={openNotification}>
+                    <div className="mt-10">
+                    {doctorReq.map((item: Doctor, index: number) => (
+                        <div  key={index}>
+                                    <div className="mt-4 bg-white  px-5 py-3.5 rounded-lg shadow hover:shadow-xl max-w-lg ml-auto mr-16 transform hover:-translate-y-[0.125rem] transition duration-100 ease-linear">
+                                        <div className="w-full flex items-center justify-between">
+                                            <span className="font-medium text-sm text-slate-400">New request</span>
+                                        </div>
+                                        <div className="flex items-center mt-2 rounded-lg px-1 py-1 cursor-pointer">
+                                            <div className="relative flex flex-shrink-0 items-end">
+                                                <img className="h-16 w-16 rounded-full" src={item.photoURL} />
+                                                <span className="absolute h-4 w-4 bg-green-400 rounded-full bottom-0 right-0 border-2 border-white"></span>
+                                            </div>
+                                            <div className="ml-3 flex flex-col gap-1">
+                                                <span className="font-semibold tracking-tight text-black text-xs">Name: {item.name}</span>
+                                                <span className="text-xs leading-none text-black opacity-50">Email: {item.email}</span>
+                                                <span className="text-xs leading-none text-black opacity-50">Department: {item.specialization}</span>
+                                                <span className="text-[10px] text-blue-500 font-medium leading-4 opacity-75">{format(item.createdAt)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                    ))}
+                    </div>
+                </div>}
+
+
             </AppBar>
             {renderMobileMenu}
             {renderMenu}

@@ -16,6 +16,7 @@ const Navbar = () => {
     const dispatch = useDispatch()
 
     const handleLogout = () => {
+        localStorage.removeItem('token')
         dispatch(logoutSuccess())
         setLogoutDiv(false)
     }
@@ -45,12 +46,12 @@ const Navbar = () => {
                     <div className="flex items-center space-x-2" onClick={showLogout}>
                         <span className="flex ">
                             <span className="text-sm font-medium hidden sm:block md:block text-gray-900">
-                                {userData.isAuthenticated && `Dr. ${userData.user?.data?.name.toUpperCase()}` }
+                                {userData.isAuthenticated && `Dr. ${userData.user?.name?.toUpperCase()}` }
                             </span>
                         </span>
 
                         {userData.isAuthenticated ?
-                            userData?.user?.data?.photoURL == "" ? <Avatar sx={{ backgroundColor: 'black' }}>{userData.user?.data?.name.slice(0, 1)}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData?.user?.data?.photoURL} /> :
+                            userData?.user?.photoURL == "" ? <Avatar sx={{ backgroundColor: 'black' }}>{userData.user?.name.slice(0, 1)}</Avatar> : <img className="inline-block w-10 h-10 rounded-full" src={userData?.user?.photoURL} /> :
                             <img className="inline-block w-10 h-10 rounded-full" src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" />}
                     </div>
                     {logoutDiv && <div className='absolute p-1 border-2 top-16 bg-gray-100'>

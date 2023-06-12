@@ -16,7 +16,8 @@ import Appointment from './Pages/Appointments/Appointment'
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
   const { loading } = useSelector((state: any) => state.auth)
-  const { show } = useSelector((state: any) => state.alert)
+  const { show } = useSelector((state: any) => state.alert)  
+
   return (
     <>
       {isloading && <Loading />}

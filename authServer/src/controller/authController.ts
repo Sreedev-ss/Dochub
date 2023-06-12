@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 import { DoctorRepository } from '../repositories/doctor';
 import { PatientRepository } from '../repositories/patient';
+import { PatientModel } from '../models/patient';
+import { sendMail } from '../services/nodemailer';
 
 const authService = new AuthService();
 const doctorRepo = new DoctorRepository();
@@ -27,9 +29,41 @@ const login = async (req: Request, res: Response) => {
     }
 };
 
+const sendEmail = async (req: Request, res: Response) => {
+    try {
+        const { email } = req.body
+        const patient = await patientRepo.findByEmail(email)
+        const response = await sendMail(email,patient.verificationCode)
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+const verifyEmail = async (req: Request, res: Response) => {
+    try {
+        const {code,email} = req.body
+        const patient = await patientRepo.findByEmail(email)
+        if(code == patient.verificationCode){
+            await PatientModel.updateOne({email:patient.email},{
+                $set:{
+                    isValid:true
+                }
+            })
+            res.status(200).json(patient)
+        }else{
+        
+            res.status(401).json('Email verification failed')
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 const getPatientById = async (req: Request, res: Response) => {
     try {
-        const id:string = req.params.id
+        const id: string = req.params.id
         const data = await patientRepo.findById(id)
         res.json(data)
     } catch (error) {
@@ -39,7 +73,7 @@ const getPatientById = async (req: Request, res: Response) => {
 
 const getDoctor = async (req: Request, res: Response) => {
     try {
-        const email:any = req.query?.email
+        const email: any = req.query?.email
         const data = await doctorRepo.findByEmail(email)
         res.json(data.id)
     } catch (error) {
@@ -47,4 +81,4 @@ const getDoctor = async (req: Request, res: Response) => {
     }
 };
 
-export { signup, login, getDoctor, getPatientById };
+export { signup, login, getDoctor, getPatientById, sendEmail,verifyEmail };

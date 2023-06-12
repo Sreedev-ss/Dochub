@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { makeApiCall } from '../../services/axios/axios'
 import { useDispatch } from 'react-redux'
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice'
-import { Box, Button, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 const DoctorList = () => {
@@ -14,9 +13,9 @@ const DoctorList = () => {
             return makeApiCall('/doctor/all-doctor', 'GET');
         };
         const getDoctor = async () => {
+            dispatch(hideLoading())
             const { data }: any = await allDoctor();
             setDoctors(data)
-            dispatch(hideLoading())
         }
         dispatch(showLoading())
         getDoctor()
@@ -38,7 +37,7 @@ const DoctorList = () => {
                         <button onClick={() => navigate('/admin/add-doctor')} className='border w-40 rounded-lg hover:bg-gray-200 hover:transition-all text-blue-500 border-blue-500 bg-transparent' >
                             Add Doctor
                         </button>
-                        <button onClick={() => navigate('/admin/add-department')}  className='border w-40 rounded-lg hover:bg-gray-200 hover:transition-all text-blue-500 border-blue-500 bg-transparent' >
+                        <button onClick={() => navigate('/admin/add-department')} className='border w-40 rounded-lg hover:bg-gray-200 hover:transition-all text-blue-500 border-blue-500 bg-transparent' >
                             Add Department
                         </button>
                     </div>
@@ -57,7 +56,7 @@ const DoctorList = () => {
                                 .filter(item => item["specialization"] === category)
                                 .map(item => (
                                     <div key={item["DoctorId"]} onClick={() => viewDetails(item["_id"])} className="doctorDisp w-44 bg-white flex flex-col items-center justify-center shadow-2xl h-44 box">
-                                        <img src={item["photoURL"] ? item["photoURL"]  :'/dummyDoctor.jpeg'} className='w-28 h-28' alt="" />
+                                        <img src={item["photoURL"] ? item["photoURL"] : '/dummyDoctor.jpeg'} className='w-28 h-28' alt="" />
                                         <h1 className='text-sm'>{`Dr. ${item["name"]}`}</h1>
                                         <button className='bg-gray-600 text-white w-36 text-xs mx-7 rounded-sm'>View details</button>
                                     </div>

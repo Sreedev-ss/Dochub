@@ -63,14 +63,14 @@ const AppointmentCard = () => {
     }
 
     return (
-        <div className='mx-3'>
+        <React.Fragment>
             <h1 className='font-medium text-2xl mb-2 flex justify-start mx-3 tracking-widest'>Appointments</h1>
             {appointments.map((items) => (
-                <div className="mx-auto max-w-screen justify-center px-2 md:flex md:space-x-6 xl:px-0">
+                <div className="mx-auto max-w-screen justify-center px-2 xl:px-0">
                     <div className="rounded-lg md:w-full">
-                        <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-                            <img src="/dummyDoctor.jpeg" alt="product-image" className="w-full rounded-lg sm:w-40" />
-                            <div className="sm:ml-4 sm:flex sm:w-full sm:justify-around">
+                        <div className="justify-between mb-6 rounded-lg bg-white  shadow-md sm:flex sm:justify-start">
+                            <img src={items.doctorProfile ? items.doctorProfile :'/dummyDoctor.jpeg'} alt="product-image" className="w-full p-6 rounded-lg sm:w-40" />
+                            <div className="sm:ml-4 p-6 sm:flex sm:w-full sm:justify-around">
                                 <div className="mt-5 sm:mt-0 flex flex-col items-start">
                                     <h2 className="text-lg font-bold text-gray-900">Dr. {items.doctorName}</h2>
                                     <p className="mt-1 text-xs text-gray-700">Booking Date: {items.date}</p>
@@ -96,7 +96,7 @@ const AppointmentCard = () => {
                     </div>
                 </div>
             ))}
-        </div>
+        </React.Fragment>
     )
 }
 

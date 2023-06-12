@@ -1,8 +1,13 @@
 .sidebar {
     border-radius: 10px;
     grid-area: sidebar;
-
     .active {
         background-color: rgba(0, 0, 0, 0.061);
     }
+}
+.mSidebar{
+    .active {
+        background-color: rgba(0, 0, 0, 0.061);
+    }
+
 }

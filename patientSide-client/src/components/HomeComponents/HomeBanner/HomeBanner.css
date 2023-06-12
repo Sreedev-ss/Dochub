@@ -13,4 +13,8 @@
   width: 265px;
   height: 200px;
   border-radius: 10px;
+}
+.HomePage .bnrImg {
+  background-image: url("/public/online-marketing-hIgeoQjS_iE-unsplash.jpg");
+  background-position-y: 0px;
 }/*# sourceMappingURL=HomeBanner.css.map */

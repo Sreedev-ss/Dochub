@@ -6,6 +6,7 @@ import authSlice from './authslice';
 import stateSlice from './stateSlice'; 
 import loadingSlice from './loadingSlice';
 import alertSlice from './alertSlice';
+import notificationSlice from './notificationSlice';
 
 const persistConfig = {
     key:'root',
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     auth:persistReducer(persistConfig, authSlice),
     state:stateSlice,
     loading:loadingSlice,
-    alert: alertSlice
+    alert: alertSlice,
+    notification:notificationSlice
 })
 
 const store = configureStore({

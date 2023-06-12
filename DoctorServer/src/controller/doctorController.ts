@@ -11,29 +11,30 @@ const doctorRepo = new DoctorRepository()
 
 const registerDoctor = async (req: Request, res: Response) => {
     try {
-        
-        const {name, DOB, sex, about, approved ,email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor
+
+        const { name, DOB, sex, about, approved, email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor
         const doctor = await doctorRepo.findByEmail(email)
         if (!doctor) {
             const response = await doctorAPI.registerDoctor(email, password, name, role)
             if (response) {
                 const Id = response.data._id
-                const addDoctor = await docService.addDoctor(Id, email, mobile, specialization, address, photoURL, name, DOB, sex, about, fees, worktime,approved)
+                const addDoctor = await docService.addDoctor(Id, email, mobile, specialization, address, photoURL, name, DOB, sex, about, fees, worktime, approved)
                 res.json(addDoctor)
             } else {
-                throw new Error('Error adding doctor')
+                throw 'Error adding doctor'
             }
         } else {
-            throw new Error('Doctor already exist')
+            throw 'Doctor already exist. Please Login'
         }
     } catch (error) {
-        res.status(401).json({ error: error.message });
+        console.log(error);
+        res.status(500).json(error);
     }
 }
 
 const getAllDoctor = async (req: Request, res: Response) => {
     try {
-        const doctor = await DoctorModel.find({approved:true})
+        const doctor = await DoctorModel.find({ approved: true })
         res.json(doctor)
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -53,6 +54,8 @@ const getDoctorById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const doctor = await doctorRepo.findById(id)
+        console.log(doctor);
+
         res.json(doctor)
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -78,6 +81,40 @@ const addDepartment = async (req: Request, res: Response) => {
     }
 }
 
+const getDoctorRequest = async (req: Request, res: Response) => {
+    try {
+        const response = await doctorRepo.findDocRequest()
+        res.json(response)
+    } catch (error) {
+        res.status(500).json({ error: 'Cannot find requested doctor' })
+    }
+}
+
+const approveDoctorRealtimeRequest = async (id: string, field: any, value: any) => {
+    try {
+        const response = await doctorRepo.update(id, field, value)
+        return response
+    } catch (error) {
+        return error.message
+    }
+}
+
+const searchDoctor = async (req: Request, res: Response) => {
+    const { query } = req.query;
+    try {
+        const results = await DoctorModel.find({
+            name: { $regex: new RegExp(`^${query as string}`, 'i') }, // Case-insensitive search
+        });
+        console.log(results);
+        
+        res.json(results);
+    } catch (error) {
+        console.log('Error occurred during search:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
 
 export {
     registerDoctor,
@@ -86,4 +123,7 @@ export {
     getDoctorById,
     addDepartment,
     getDepartment,
+    approveDoctorRealtimeRequest,
+    getDoctorRequest,
+    searchDoctor
 }

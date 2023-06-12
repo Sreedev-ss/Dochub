@@ -7,6 +7,9 @@ import { httpStatus } from '../constants/httpStatus';
 import { DoctorRepository } from '../repositories/doctor';
 import { PatientRepository } from '../repositories/patient';
 import { AdminRepository } from '../repositories/admin';
+import { randString } from '../utils/uniqueStringGenerator';
+import { sendMail } from './nodemailer';
+import { generateOTP } from '../utils/generateOtp';
 
 const encryptionService = new EncryptionService()
 const responseMsg = resMessages()
@@ -26,7 +29,6 @@ enum Role {
 
 class AuthService {
     async register(name: string, email: string, password: string, idToken: string, role: string) {
-        console.log(name, email, password, idToken, role)
         try {
             if (role == Role.Patient) {
                 if (idToken) {
@@ -36,6 +38,7 @@ class AuthService {
                         email: user.email,
                         profileURL: user.photoURL,
                         blocked: false,
+                        isValid:true
                     };
 
                     const patientCheck = await patientRepo.findByEmail(userData?.email)
@@ -48,12 +51,14 @@ class AuthService {
                 } else {
                     const patientCheck = await patientRepo.findByEmail(email)
                     const hashedPassword = await encryptionService.hashPassword(password)
+                    const code:any = await generateOTP(6)
                     const userData: any = {
                         name: name,
                         email: email,
                         password: hashedPassword,
-                        profileURL: 'false',
+                        profileURL: '',
                         blocked: false,
+                        verificationCode:code
                     }
                     if (!patientCheck) {
                         const patient = await patientRepo.create(userData);
@@ -91,15 +96,13 @@ class AuthService {
     async login(email: string, password: string, idToken: string) {
         const doctor = await doctorRepo.findByEmail(email)
         const admin = await adminRepo.findByEmail(email)
-        console.log(admin);
-        
         try {
             if (doctor) {
                 if (await encryptionService.comparePasswords(password, doctor.password)) {
                     const token = jwt.sign({ userId: doctor._id, email: doctor.email, role: Role.Doctor }, process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: '1h',
                     });
-                    return { token, userId: doctor._id, email, name: doctor.name, role: Role.Doctor };
+                    return { token:token, userId: doctor._id, email, name: doctor.name, role: Role.Doctor };
                 } else {
                     throw new Error('Invalid Password')
                 }
@@ -108,7 +111,7 @@ class AuthService {
                     const token = jwt.sign({ userId: admin._id, email: admin.email, role: Role.Admin }, process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: '1h',
                     });
-                    return { token, userId: admin._id, email, name: admin.name, role: Role.Admin };
+                    return { token:token, userId: admin._id, email, name: admin.name, role: Role.Admin };
                 } else {
                     throw new Error('Invalid Password')
                 }
@@ -126,7 +129,7 @@ class AuthService {
                         const token = jwt.sign({ userId: patient.id, role: Role.Patient, email: userData.email }, process.env.ACCESS_TOKEN_SECRET, {
                             expiresIn: '1h',
                         });
-                        return { token, userId: patient.id, profileURL: userData.profileURL, email, name: patient.name, role: Role.Patient };
+                        return { token:token, userId: patient.id, profileURL: userData.profileURL, email, name: patient.name, role: Role.Patient };
                     } else {
                         throw new Error('Invalid email or password')
                     }
