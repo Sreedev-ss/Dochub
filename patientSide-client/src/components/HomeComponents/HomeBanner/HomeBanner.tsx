@@ -11,7 +11,6 @@ const HomeBanner = () => {
   return (
     <React.Fragment>
       <div className="HomePage">
-
         <h1 className='font-medium text-2xl mt-2 lg:flex lg:mx-3 md:mx-auto tracking-widest'>Welcome {userData?.user?.name?.split(' ').join('')} &#128522;</h1>
         <main className="my-3">
         <div className="container mx-auto px-6">

@@ -34,7 +34,8 @@ app.all('/*', async (req: Request, res: Response) => {
             const response = await axios(config);
             res.status(response.status).json(response.data);
         } catch (error) {
-
+            console.log(error);
+            
             res.status(500).json({message:error?.response?.data});
         }
     } else {

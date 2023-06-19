@@ -5,6 +5,7 @@ const URL = "http://localhost:3000"
 const axiosInstance = axios.create({
   baseURL: URL,
 });
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token'); // Retrieve the token from your storage (e.g., localStorage)
@@ -17,12 +18,13 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-export const makeApiCall = async (endpoint: string, method: string, data?: any) => {
+export const makeApiCall = async (endpoint: string, method: string, data?: any,cancelTokenSource?:any) => {
   try {
     const response = await axiosInstance({
       method,
       url: `${URL}${endpoint}`,
       data,
+      cancelToken:cancelTokenSource?.token
     });
     
     return response;

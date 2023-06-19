@@ -2,28 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { makeApiCall } from '../../services/axios/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
+import { IAppointment } from '../../util/interfaces';
 
 const AppointmentCard = () => {
     const { user } = useSelector((state: any) => state.auth)
     const dispatch = useDispatch()
-
-    interface IAppointment {
-        name: string,
-        age: string,
-        doctorId: string,
-        patientId: string,
-        email: string,
-        gender: string,
-        mobile: string,
-        symptoms: string,
-        date: string,
-        time: string,
-        fees: number,
-        payment: boolean,
-        payment_intent: string,
-        doctorName: string,
-        doctorProfile: string
-    }
 
     const [appointments, setAppointment] = useState<IAppointment[]>([])
 
@@ -34,8 +17,6 @@ const AppointmentCard = () => {
                     return makeApiCall(`/doctor/all-appointment?id=${encodeURIComponent(user._id)}&role=${encodeURIComponent('patient')}`, 'GET');
                 };
                 const { data } = await getAppointment()
-                console.log(data);
-                
                 setAppointment(data)
                 dispatch(hideLoading())
             } catch (error) {

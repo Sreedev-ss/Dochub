@@ -12,11 +12,12 @@ import Alert from './components/Common/alert/alert'
 import Schedule from './Pages/Schedule/Schedule'
 import PaymentSuccess from './components/Common/success/success'
 import Appointment from './Pages/Appointments/Appointment'
+import Chat from './Pages/Chat/Chat'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
   const { loading } = useSelector((state: any) => state.auth)
-  const { show } = useSelector((state: any) => state.alert)  
+  const { show } = useSelector((state: any) => state.alert)
 
   return (
     <>
@@ -28,7 +29,7 @@ function App() {
           <Home />
         } />
         <Route path='/doctors' element={
-            <Doctor />
+          <Doctor />
         } />
         <Route path='/doctors/schedule/:id' element={
           <ProtectedRoute>
@@ -37,10 +38,11 @@ function App() {
         } />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/success' element={<PaymentSuccess/>} />
+        <Route path='/success' element={<ProtectedRoute><PaymentSuccess/></ProtectedRoute>} />
+        <Route path='/chat' element={<ProtectedRoute><Chat/></ProtectedRoute>} />
         <Route path='/cancel' element={'Payment failed'} />
         <Route path='*' element={<PageNotFound />} />
-        <Route path='/appointments' element={<Appointment />} />
+        <Route path='/appointments' element={ <ProtectedRoute><Appointment /></ProtectedRoute>} />
       </Routes>
     </>
   )

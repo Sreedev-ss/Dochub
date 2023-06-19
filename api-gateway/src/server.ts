@@ -20,5 +20,5 @@ app.use((req, res) => {
 })
 
 app.listen(server.port, () => {
-    console.log(`Auth server running on port ${server.port}`)
+    console.log(`Api Gateway running on port ${server.port}`)
 })

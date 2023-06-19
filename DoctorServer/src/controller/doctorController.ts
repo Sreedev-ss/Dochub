@@ -9,7 +9,7 @@ const doctorAPI = new DoctorApi()
 const docService = new DoctorService()
 const doctorRepo = new DoctorRepository()
 
-const registerDoctor = async (req: Request, res: Response) => {
+export const registerDoctor = async (req: Request, res: Response) => {
     try {
 
         const { name, DOB, sex, about, approved, email, password, role, mobile, specialization, address, photoURL, fees, worktime } = req.body.doctor
@@ -32,7 +32,7 @@ const registerDoctor = async (req: Request, res: Response) => {
     }
 }
 
-const getAllDoctor = async (req: Request, res: Response) => {
+export const getAllDoctor = async (req: Request, res: Response) => {
     try {
         const doctor = await DoctorModel.find({ approved: true })
         res.json(doctor)
@@ -41,7 +41,7 @@ const getAllDoctor = async (req: Request, res: Response) => {
     }
 }
 
-const getDoctor = async (req: Request, res: Response) => {
+export const getDoctor = async (req: Request, res: Response) => {
     try {
         const email = req.params.email
         const doctor = await doctorRepo.findByEmail(email)
@@ -50,7 +50,7 @@ const getDoctor = async (req: Request, res: Response) => {
         res.status(500).json({ error: error.message });
     }
 }
-const getDoctorById = async (req: Request, res: Response) => {
+export const getDoctorById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const doctor = await doctorRepo.findById(id)
@@ -62,7 +62,7 @@ const getDoctorById = async (req: Request, res: Response) => {
     }
 }
 
-const getDepartment = async (req: Request, res: Response) => {
+export const getDepartment = async (req: Request, res: Response) => {
     try {
         const department = await DepartmentModel.find({})
         res.json(department)
@@ -71,7 +71,7 @@ const getDepartment = async (req: Request, res: Response) => {
     }
 }
 
-const addDepartment = async (req: Request, res: Response) => {
+export const addDepartment = async (req: Request, res: Response) => {
     try {
         const { department } = req.body
         const response = await DepartmentModel.create({ specialization: department })
@@ -81,7 +81,7 @@ const addDepartment = async (req: Request, res: Response) => {
     }
 }
 
-const getDoctorRequest = async (req: Request, res: Response) => {
+export const getDoctorRequest = async (req: Request, res: Response) => {
     try {
         const response = await doctorRepo.findDocRequest()
         res.json(response)
@@ -90,7 +90,7 @@ const getDoctorRequest = async (req: Request, res: Response) => {
     }
 }
 
-const approveDoctorRealtimeRequest = async (id: string, field: any, value: any) => {
+export const approveDoctorRealtimeRequest = async (id: string, field: any, value: any) => {
     try {
         const response = await doctorRepo.update(id, field, value)
         return response
@@ -99,7 +99,7 @@ const approveDoctorRealtimeRequest = async (id: string, field: any, value: any) 
     }
 }
 
-const searchDoctor = async (req: Request, res: Response) => {
+export const searchDoctor = async (req: Request, res: Response) => {
     const { query } = req.query;
     try {
         const results = await DoctorModel.find({
@@ -116,14 +116,4 @@ const searchDoctor = async (req: Request, res: Response) => {
 
 
 
-export {
-    registerDoctor,
-    getAllDoctor,
-    getDoctor,
-    getDoctorById,
-    addDepartment,
-    getDepartment,
-    approveDoctorRealtimeRequest,
-    getDoctorRequest,
-    searchDoctor
-}
+

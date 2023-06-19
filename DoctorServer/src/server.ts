@@ -16,7 +16,7 @@ const serverRealtime = http.createServer(app);
 
 dotEnv.config()
 
-socketConnection(serverRealtime)
+// socketConnection(serverRealtime)
 
 const server = serverConfig()
 const httpMsg = httpStatus()
@@ -30,10 +30,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(`${server.baseUrl}/doctor`, doctorApi)
 
-
-serverRealtime.listen(8080, () => {
-    console.log(`Realtime server running on port 8080`)
-})
 
 app.use((req, res) => {
     res.send({ code: 404, error: httpMsg[404] })

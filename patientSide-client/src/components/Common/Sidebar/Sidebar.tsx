@@ -64,8 +64,8 @@ const Sidebar = () => {
       };
     return (
         <React.Fragment>
-            <div className='flex justify-center'>
-                <aside className="sidebar hidden lg:block  w-64 h-screen overflow-y-auto bg-white ">
+            <div className='flex justify-center '>
+                <aside className="sidebar hidden lg:block  w-64 overflow-y-auto bg-white ">
                     <nav className="flex-1 mt-10 mx-10 " >
                         <ul className='space-y-4'>
                             {sidebarItems.map((items: any) => (

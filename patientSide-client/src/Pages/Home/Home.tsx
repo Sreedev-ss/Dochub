@@ -24,9 +24,6 @@ const Home = () => {
       </div>
     </div>
 
-
-
-
   )
 }
 

@@ -11,6 +11,7 @@ import Alert from './components/Common/alert/alert'
 import { lazy } from 'react'
 import ErrorBoundary from './util/ErrorBoundary'
 import AddDoctorForm from './components/Doctor/AddDoctor'
+import DoctorChat from './pages/DoctorChat/DoctorChat'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
@@ -26,8 +27,9 @@ function App() {
           <ErrorBoundary>
             <AddDoctorForm />
           </ErrorBoundary>} />
-        <Route path='/doctor' element={<ErrorBoundary>
-          <ProtectedRoute><DoctorHome /></ProtectedRoute></ErrorBoundary>} />
+        <Route path='/doctor' element={<ProtectedRoute><DoctorHome /></ProtectedRoute>} />
+        <Route path='/doctor/chats' element={
+          <ProtectedRoute><DoctorChat /></ProtectedRoute>} />
         <Route path='/doctor/appointments' element={
           <ProtectedRoute>
             <DoctorAppointments />
