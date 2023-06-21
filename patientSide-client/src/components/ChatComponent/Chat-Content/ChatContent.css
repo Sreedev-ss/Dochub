@@ -21,4 +21,7 @@
 
 .contentDiv {
   height: calc(100vh - 100px);
+}
+.contentDiv .timeagoTxt {
+  font-size: xx-small;
 }/*# sourceMappingURL=ChatContent.css.map */

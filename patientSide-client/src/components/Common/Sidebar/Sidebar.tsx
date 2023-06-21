@@ -39,11 +39,6 @@ const Sidebar = () => {
         icon: <PersonalVideoOutlined />
     },
     {
-        name: 'Video chat',
-        link: '/videochat',
-        icon: <VideoChatOutlined />
-    },
-    {
         name: 'Chat',
         link: '/chat',
         icon: <ChatOutlined />

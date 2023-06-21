@@ -28,12 +28,14 @@ export const updatePayment = async (req: Request, res: Response) => {
 export const getAllAppointment = async (req: RequestDefenition, res: Response) => {    
     try {
         const user = req.query.role
-        const id:string = req.query.id as string      
+        const id:string = req.query.id as string   
+        const skip = req.query.skip
+        const limit = req.query.limit   
         if(user == 'patient'){
-            const response = await appointmentRepo.findByPatientId(id)
+            const response = await appointmentRepo.findByPatientId(id,skip,limit)
             res.json(response)
         } else{            
-            const response = await appointmentRepo.findByDoctorId(id)
+            const response = await appointmentRepo.findByDoctorId(id,skip,limit)
             res.json(response)
         }  
        

@@ -4,12 +4,12 @@ class AppointmentRepository {
     async findById(id: string): Promise<AppointmentDocument | null> {
         return AppointmentModel.findById(id).exec();
     }
-    async findByPatientId(patientId: string): Promise<AppointmentDocument[] | null> {
-        return AppointmentModel.find({patientId}).sort({ _id: -1 }).exec();
+    async findByPatientId(patientId: string,skip:any,limit:any): Promise<AppointmentDocument[] | null> {
+        return AppointmentModel.find({patientId}).sort({ _id: -1 }).skip(skip).limit(limit).exec();
     }
     
-    async findByDoctorId(doctorId: string): Promise<AppointmentDocument[] | null> {
-        return AppointmentModel.find({doctorId}).sort({ _id: -1 }).exec();
+    async findByDoctorId(doctorId: string,skip:any,limit:any): Promise<AppointmentDocument[] | null> {
+        return AppointmentModel.find({doctorId}).sort({ _id: -1 }).skip(skip).limit(limit).exec();
     }
     
     async findByDoctorIdAndDate(doctorId: string,date:string): Promise<AppointmentDocument[] | null> {

@@ -21,12 +21,11 @@ const Chat = () => {
     const [chat, setChat] = useState<any>([])
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
+    const [currentChatName, setCurrentChatName] = useState("");
     const [sendMessage, setSendMessage] = useState(null);
     const [receivedMessage, setReceivedMessage] = useState(null);
 
-    useEffect(() => {
-        console.log(appointments)
-        
+    useEffect(() => {        
         async function getAllAppointment() {
             try {
                 const getAppointment = async () => {
@@ -89,15 +88,14 @@ const Chat = () => {
         return online ? true : false;
     };
 
-    const handleClick = async (patientId: string) => {
-        // setCurrentChat(chat);
+    const handleClick = async (patientId: string,name:string) => {
         const createChat = async (credentials: { senderId: string, recieverId: string }) => {
             return makeApiCall(`/doctor/chat`, 'POST', credentials)
         }
-
-        const { data } = await createChat({ senderId: user.DoctorId, recieverId: patientId })
+        await createChat({ senderId: user.DoctorId, recieverId: patientId })
         const selectedChat = await chat.filter((data: any) => data.members[0] === patientId)
         setCurrentChat(selectedChat[0])
+        setCurrentChatName(name)
     }
 
     return (
@@ -119,7 +117,7 @@ const Chat = () => {
                                 <div className="flex flex-col space-y-1 mt-4 -mx-2 h-full overflow-y-auto">
                                     {appointments.map((items)=>(
 
-                                    <button onClick={()=>handleClick(items.patientId)}
+                                    <button onClick={()=>handleClick(items.patientId,items.name)}
                                         className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
                                     >
                                         <div
@@ -139,6 +137,7 @@ const Chat = () => {
                                 data={chat}
                                 chat={currentChat}
                                 currentUser={user._id}
+                                currentUserName={currentChatName}
                                 setSendMessage={setSendMessage}
                                 receivedMessage={receivedMessage}
                             />

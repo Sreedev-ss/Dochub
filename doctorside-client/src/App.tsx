@@ -12,11 +12,11 @@ import { lazy } from 'react'
 import ErrorBoundary from './util/ErrorBoundary'
 import AddDoctorForm from './components/Doctor/AddDoctor'
 import DoctorChat from './pages/DoctorChat/DoctorChat'
+import VideoChat from './pages/DoctorChat/DoctorVideoChat'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
   const { show } = useSelector((state: any) => state.alert)
-
   return (
     <>
       {isloading && <Loading />}
@@ -34,6 +34,9 @@ function App() {
           <ProtectedRoute>
             <DoctorAppointments />
           </ProtectedRoute>
+        } />
+        <Route path='/doctor/create-room/:roomId' element={
+            <VideoChat/>
         } />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
