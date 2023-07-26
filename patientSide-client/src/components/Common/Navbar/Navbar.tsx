@@ -46,7 +46,7 @@ const Navbar = () => {
       }
     };
   
-    const debouncedFetchSuggestions = debounce(fetchSuggestions, 600);
+    const debouncedFetchSuggestions = debounce(fetchSuggestions, 100);
     debouncedFetchSuggestions(inputValue)
     return () => {
       cancelTokenSource.cancel('Request cancelled');
@@ -166,11 +166,11 @@ const Navbar = () => {
       </div>
       {showSearch && <div className="absolute top-0 left-0 w-screen h-full bg-gray-700 opacity-95 z-40 select-none">
         <Close onClick={() => setShowSearch(false)} sx={{ color: 'white' }} className='mt-2' />
-        <div className="w-4/6 z-50 relative mx-auto mt-36 overflow-scroll" >
+        <div className="w-4/6 z-50 relative mx-auto mt-36 overflow-y-scroll overflow-x-hidden" >
           <div className="bg-white w-full h-16 rounded-xl mb-3 shadow-lg p-2">
             <input onChange={(e) => setInputValue(e.target.value)} type="text" placeholder="Search" value={inputValue} className="w-full h-full text-2xl rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
           </div>
-          {suggestions.length && <div className="bg-white w-full h-full rounded-xl shadow-xl overflow-scroll p-1">
+          {suggestions.length && <div className="bg-white w-full h-full rounded-xl shadow-xl p-1">
             {suggestions.map((items: any) => (
               <div onClick={() => navigate(`/doctors/schedule/${items['_id']}`)} className="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer">
                 <div className="mr-4"><div className="h-9 w-9 rounded-sm flex items-center justify-center text-3xl" >

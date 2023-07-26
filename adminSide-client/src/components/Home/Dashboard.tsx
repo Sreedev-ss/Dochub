@@ -1,12 +1,9 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import DoughnutChat from '../Graphs/DoughnutGraph';
-import MontlyGraphs from '../Graphs/MontlyGraph';
 import YearlyGraphs from '../Graphs/YearlyGraph';
+import MontlyGraphs from '../Graphs/MontlyGraph';
 import SymptomDoughnut from '../Graphs/SymptomDoughnut';
 
-const Dashboard = ({ totalPatients, revenue, male, female,symptomType }: any) => {
-    const { user } = useSelector((state: any) => state.auth)
+const Dashboard = ({ totalPatients, revenue, gender, symptomType }: any) => {
     const cardData = [
         {
             title: 'Total Patients',
@@ -18,7 +15,7 @@ const Dashboard = ({ totalPatients, revenue, male, female,symptomType }: any) =>
         },
         {
             title: 'Total Appointments',
-            data: '10',
+            data: '18',
         },
         {
             title: 'Patients',
@@ -28,7 +25,7 @@ const Dashboard = ({ totalPatients, revenue, male, female,symptomType }: any) =>
 
     return (
         <>
-            <h1 className='font-medium text-2xl flex mx-5 mt-4'>Welcome Dr {user?.name?.split(' ').join('')} &#128522;</h1>
+            <h1 className='font-medium text-2xl flex mx-5 mt-4'>Welcome Admin &#128522;</h1>
             <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6 mt-5 mx-5">
                 {cardData.map((data) => (
                     <div className="block w-full p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
@@ -39,7 +36,7 @@ const Dashboard = ({ totalPatients, revenue, male, female,symptomType }: any) =>
             </div>
             <div className="bg-white mt-5 p-5 mx-5 rounded-xl flex w-screen items-center justify-around">
                 <div className="w-3/12">
-                    <DoughnutChat male={male} female={female} />
+                    <DoughnutChat gender={gender} />
                 </div>
                 <div className='w-7/12'>
                     <MontlyGraphs />

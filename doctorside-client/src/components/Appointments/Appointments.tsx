@@ -163,15 +163,15 @@ const Appointments = ({ startIndex, endIndex, goToPage, currentPage }: any) => {
                                             </span>
                                         </td>
                                     </tr>
-                                )):<tr>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1>No entries left</h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
-                                 </tr>}
+                                )) : <tr>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1>No entries left</h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                    <td className="px-5 py-5 border-b items-center border-gray-200 bg-white text-lg"><h1></h1></td>
+                                </tr>}
                             </tbody>
                         </table>
                     </div>
@@ -190,7 +190,7 @@ const Appointments = ({ startIndex, endIndex, goToPage, currentPage }: any) => {
                                 className="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-white dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{currentPage}</button>
                         </li>
                         <li>
-                            <button onClick={() => goToPage(currentPage + 1)} disabled={appointments.length ? false:true}
+                            <button onClick={() => goToPage(currentPage + 1)} disabled={appointments.length ? false : true}
                                 className="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 dark:bg-white dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
                         </li>
                     </ul>

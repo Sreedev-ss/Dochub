@@ -61,7 +61,6 @@ const AddDoctorForm = () => {
 
             try {
                 if (image) {
-
                     const cloudLink = await cloudinaryUpload.post('/upload', file, {
                         headers: {
                             'Content-Type': 'multipart/form-data',

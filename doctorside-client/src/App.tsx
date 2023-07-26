@@ -13,6 +13,10 @@ import ErrorBoundary from './util/ErrorBoundary'
 import AddDoctorForm from './components/Doctor/AddDoctor'
 import DoctorChat from './pages/DoctorChat/DoctorChat'
 import VideoChat from './pages/DoctorChat/DoctorVideoChat'
+import DoctorPatient from './pages/DoctorPatients/DoctorPatient'
+import AddPrescription from './components/Patients/AddPrescription'
+import DoctorBlog from './pages/DoctorBlog/DoctorBlog'
+import AddBlog from './components/Blog/AddBlog'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
@@ -35,8 +39,28 @@ function App() {
             <DoctorAppointments />
           </ProtectedRoute>
         } />
+        <Route path='/doctor/mypatients' element={
+          <ProtectedRoute>
+            <DoctorPatient />
+          </ProtectedRoute>
+        } />
+        <Route path='/doctor/blog' element={
+          <ProtectedRoute>
+            <DoctorBlog />
+          </ProtectedRoute>
+        } />
+        <Route path='/doctor/blog/add-blog' element={
+          <ProtectedRoute>
+            <AddBlog/>
+          </ProtectedRoute>
+        } />
+        <Route path='/doctor/mypatients/add-prescription/:id' element={
+          <ProtectedRoute>
+            <AddPrescription />
+          </ProtectedRoute>
+        } />
         <Route path='/doctor/create-room/:roomId' element={
-            <VideoChat/>
+          <VideoChat />
         } />
         <Route path='*' element={<PageNotFound />} />
       </Routes>

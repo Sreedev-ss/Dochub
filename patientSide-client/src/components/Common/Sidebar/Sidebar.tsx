@@ -24,7 +24,7 @@ const Sidebar = () => {
     }
 
     const sidebarItems: Ikeys[] = [{
-        name: 'Dashboard',
+        name: 'Home',
         link: '/',
         icon: <Home />
     },
@@ -44,8 +44,8 @@ const Sidebar = () => {
         icon: <ChatOutlined />
     },
     {
-        name: 'Health care',
-        link: '/healthcare',
+        name: 'Prescriptions',
+        link: '/prescriptions',
         icon: <MedicalInformationOutlined />
     },
     {
@@ -59,8 +59,8 @@ const Sidebar = () => {
       };
     return (
         <React.Fragment>
-            <div className='flex justify-center '>
-                <aside className="sidebar hidden lg:block  w-64 overflow-y-auto bg-white ">
+            <div className='flex justify-center'>
+                <aside className="sidebar hidden lg:block pb-4 w-64 overflow-y-auto bg-white ">
                     <nav className="flex-1 mt-10 mx-10 " >
                         <ul className='space-y-4'>
                             {sidebarItems.map((items: any) => (
@@ -76,7 +76,7 @@ const Sidebar = () => {
                         </ul>
                     </nav>
                 </aside>
-                <div className="sm:block mSidebar lg:hidden max-w-md px-5 fixed bottom-8 bg-white shadow-lg rounded-2xl">
+                <div className="sm:block mSidebar lg:hidden max-w-md px-5 fixed bottom-8 bg-white shadow-lg rounded-2xl z-50">
                     <div className="flex ">
                         {sidebarItems.map((items: any) => (
                             <div className="flex-1 group">

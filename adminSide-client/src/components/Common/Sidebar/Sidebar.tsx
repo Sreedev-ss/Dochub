@@ -52,12 +52,7 @@ const Sidebar = () => {
         name: 'Patients',
         link: '/admin/patients',
         icon:<BookOnlineOutlined />
-    },
-    {
-        name: 'Blog',
-        link: '/admin/blog',
-        icon: <PersonalVideoOutlined />
-    },
+    }
    ]
 
     const list = () => (

@@ -1,4 +1,4 @@
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 import { AppointmentModel } from '../models/appointment';
 import { AppointmentRepository } from '../repositories/appointment';
 import RequestDefenition from '../definition';

@@ -13,6 +13,7 @@ import Schedule from './Pages/Schedule/Schedule'
 import PaymentSuccess from './components/Common/success/success'
 import Appointment from './Pages/Appointments/Appointment'
 import Chat from './Pages/Chat/Chat'
+import Blog from './Pages/Blog/Blog'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)
@@ -40,6 +41,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/success' element={<ProtectedRoute><PaymentSuccess/></ProtectedRoute>} />
         <Route path='/chat' element={<ProtectedRoute><Chat/></ProtectedRoute>} />
+        <Route path='/blog' element={<ProtectedRoute><Blog/></ProtectedRoute>} />
         <Route path='/cancel' element={'Payment failed'} />
         <Route path='*' element={<PageNotFound />} />
         <Route path='/appointments' element={ <ProtectedRoute><Appointment /></ProtectedRoute>} />

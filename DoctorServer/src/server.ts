@@ -35,5 +35,5 @@ app.use((req, res) => {
     res.send({ code: 404, error: httpMsg[404] })
 })
 app.listen(server.port, () => {
-    console.log(`Admin server running on port ${server.port}`)
+    console.log(`Doctor server running on port ${server.port}`)
 })

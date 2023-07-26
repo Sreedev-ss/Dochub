@@ -41,7 +41,7 @@ const DoctorList = () => {
                                         <div key={item["DoctorId"]} className="doctorDisp  w-44 bg-white flex flex-col items-center justify-center shadow-2xl box">
                                             <img src={item["photoURL"] ? item["photoURL"]  :'/dummyDoctor.jpeg'} className='w-20 h-20' alt="" />
                                             <h1 className='text-sm'>{`Dr. ${item["name"]}`}</h1>
-                                            <button onClick={()=>navigate(`/doctors/schedule/${item['_id']}`)} className='bg-gray-600 text-white w-36 text-xs mx-7 rounded-sm'>See availabilty</button>
+                                            <button onClick={()=>navigate(`/doctors/schedule/${item['_id']}`)} className='bg-gray-600 text-white w-36 text-xs mx-7 rounded-sm'>See availability</button>
                                         </div>
                                     ))}
                             </div>

@@ -10,7 +10,7 @@ const Home = () => {
   const dispatch = useDispatch()
   dispatch(hideAlert())
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col ">
       <ErrorBoundary>
         <Navbar />
       </ErrorBoundary>

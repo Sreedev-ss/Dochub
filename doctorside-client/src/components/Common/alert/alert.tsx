@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 const alert = () => {
     const alertData = useSelector((state:any) => state.alert)
