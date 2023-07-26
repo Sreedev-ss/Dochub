@@ -2,7 +2,13 @@ import mongoose from 'mongoose';
 import dotEnv from 'dotenv'
 dotEnv.config()
 
-const db = mongoose.createConnection(process.env.MONGODB_URL);
+const options:any = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName:"dochub-auth"
+  };
+
+const db = mongoose.createConnection(process.env.MONGODB_URL,options);
     
 db.on('error',(error) => console.log(error))
 

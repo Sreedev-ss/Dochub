@@ -1,0 +1,75 @@
+version: "3"
+services:
+    auth-server:
+        build:
+           dockerfile: Dockerfile
+           context: ./authServer/
+        ports:
+            - "8001:8001"
+        volumes:
+             - /app/node_modules
+             - ./authServer/dist:/app/dist
+
+    doctor-server:
+        build:
+           dockerfile: Dockerfile
+           context: ./DoctorServer/
+        ports:
+            - "8000:8000"
+        volumes:
+             - /app/node_modules
+             - ./DoctorServer/dist:/app/dist
+
+    api-gateway:
+        build:
+           dockerfile: Dockerfile
+           context: ./api-gateway/
+        ports:
+            - "3000:3000"
+        volumes:
+             - /app/node_modules
+             - ./api-gateway/dist:/app/dist
+
+    payment-server:
+        build:
+           dockerfile: Dockerfile
+           context: ./payment-server/
+        ports:
+            - "8002:8002"
+        volumes:
+             - /app/node_modules
+             - ./payment-server/dist:/app/dist
+        environment:
+              - DOCTOR_SERVER_URL=http://doctor-server:8000
+
+    patient-client:
+        build:
+           dockerfile: Dockerfile
+           context: ./patientSide-client/
+        ports:
+            - "5173:5173"
+        volumes:
+             - /app/node_modules
+             - ./patientSide-client/src:/app/src
+
+    doctor-client:
+        build:
+           dockerfile: Dockerfile
+           context: ./doctorside-client/
+        ports:
+            - "5174:5174"
+        volumes:
+             - /app/node_modules
+             - ./doctorside-client/src:/app/src
+
+    admin-client:
+        build:
+           dockerfile: Dockerfile
+           context: ./adminSide-client/
+        ports:
+            - "5175:5175"
+        volumes:
+             - /app/node_modules
+             - ./adminSide-client/src:/app/src
+    
+    

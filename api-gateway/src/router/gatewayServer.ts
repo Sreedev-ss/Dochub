@@ -4,9 +4,9 @@ import axios, { AxiosRequestConfig } from 'axios';
 const app = express();
 
 const serverMappings: Record<string, string> = {
-    '/auth': 'http://localhost:8001',
-    '/doctor': 'http://localhost:8000/doc',
-    '/payment': 'http://localhost:8002'
+    '/auth': 'http://auth-server:8001',
+    '/doctor': 'http://doctor-server:8000/doc',
+    '/payment': 'http://payment-server:8002',
 };
 
 const determineServerURL = (url: string): string | null => {
@@ -28,14 +28,10 @@ app.all('/*', async (req: Request, res: Response) => {
                 Authorization:req.headers?.authorization
             }
         };
-        console.log(config);
-
         try {
             const response = await axios(config);
             res.status(response.status).json(response.data);
-        } catch (error) {
-            console.log(error);
-            
+        } catch (error) {            
             res.status(500).json({message:error?.response?.data});
         }
     } else {

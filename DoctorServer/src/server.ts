@@ -7,16 +7,10 @@ import { httpStatus } from './constants/httpStatus'
 import dotEnv from 'dotenv'
 import doctorApi from './routes/doctor'
 import bodyParser from 'body-parser'
-import http from 'http';
-import { Server } from 'socket.io';
-import socketConnection from './realtime-socket/socket'
 
 const app = express();
-const serverRealtime = http.createServer(app);
 
 dotEnv.config()
-
-// socketConnection(serverRealtime)
 
 const server = serverConfig()
 const httpMsg = httpStatus()

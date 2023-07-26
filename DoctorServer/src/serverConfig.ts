@@ -10,6 +10,5 @@ export const serverConfig = () => {
         db:{
             url : process.env.MONGODB_URL
         },
-
     }
 }
