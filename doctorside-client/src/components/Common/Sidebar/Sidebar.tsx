@@ -64,11 +64,12 @@ const Sidebar = () => {
         link: '/doctor/chats',
         icon: <ChatOutlined />
     },
-    {
-        name: 'Profile',
-        link: '/doctor/profile',
-        icon: <MedicalInformationOutlined />
-    }]
+    // {
+    //     name: 'Profile',
+    //     link: '/doctor/profile',
+    //     icon: <MedicalInformationOutlined />
+    // }
+]
 
     const list = () => (
         <Box

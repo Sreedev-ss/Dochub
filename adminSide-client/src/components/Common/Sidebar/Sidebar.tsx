@@ -48,11 +48,11 @@ const Sidebar = () => {
         link: '/admin/doctors',
         icon:  <LocalHospital />
     },
-    {
-        name: 'Patients',
-        link: '/admin/patients',
-        icon:<BookOnlineOutlined />
-    }
+    // {
+    //     name: 'Patients',
+    //     link: '/admin/patients',
+    //     icon:<BookOnlineOutlined />
+    // }
    ]
 
     const list = () => (
