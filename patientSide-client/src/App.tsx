@@ -14,7 +14,7 @@ import PaymentSuccess from './components/Common/success/success'
 import Appointment from './Pages/Appointments/Appointment'
 import Chat from './Pages/Chat/Chat'
 import Blog from './Pages/Blog/Blog'
-import Prescription from './Pages/Prescription/prescription'
+import Prescription from './Pages/Prescription/Prescription'
 
 function App() {
   const { isloading } = useSelector((state: any) => state.loading)

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideLoading, showLoading } from '../../config/Redux/loadingSlice';
 import { IPrescription } from '../../util/interfaces';
 
-const PrescriptionPatient = ({ startIndex, endIndex, goToPage, currentPage }: any) => {
+const PrescriptionPatient = () => {
     const { user } = useSelector((state: any) => state.auth)
     const dispatch = useDispatch()
     const [prescriptions, setPrescription] = useState<IPrescription[]>([])
@@ -26,7 +26,7 @@ const PrescriptionPatient = ({ startIndex, endIndex, goToPage, currentPage }: an
         dispatch(showLoading())
         getPrescritonDetails()
 
-    }, [startIndex,endIndex])
+    }, [])
 
     function formatDate(createdAt:string) {
         const dateObj = new Date(createdAt);

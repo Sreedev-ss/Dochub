@@ -2,7 +2,7 @@ import React from 'react'
 import ErrorBoundary from '../../util/ErrorBoundary'
 import Navbar from '../../components/Common/Navbar/Navbar'
 import Sidebar from '../../components/Common/Sidebar/Sidebar'
-import PrescriptionPatient from '../../components/PrescriptionComponent/prescriptionPatient'
+import PrescriptionPatient from '../../components/PrescriptionComponent/PrescriptionPatient'
 
 const Prescription = () => {
     return (
