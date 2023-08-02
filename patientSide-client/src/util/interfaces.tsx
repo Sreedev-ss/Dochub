@@ -15,3 +15,13 @@ export interface IAppointment {
     doctorName: string,
     doctorProfile: string
 }
+
+export interface IPrescription{
+    createdAt:string,
+        doctorId: string,
+        patientId: string,
+        doctorName: string,
+        medicine: string,
+        dosage: string,
+        notes: string
+}
