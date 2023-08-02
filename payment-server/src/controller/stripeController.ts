@@ -8,8 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
   apiVersion: '2022-11-15'
 });
 
-const YOUR_DOMAIN = `http://localhost:${process.env.CLIENT_PORT}`;
-const YOUR_SERVER = `http://localhost:${process.env.PORT}`;
+const YOUR_DOMAIN = `https://sreedev.live`;
 
 const doctorApi = new DoctorApi()
 

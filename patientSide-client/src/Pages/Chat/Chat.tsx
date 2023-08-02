@@ -65,7 +65,7 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
-        socket.current = io("ws://localhost:8080");
+        socket.current = io("wss://sreedev.live/socket");
         socket.current.emit("new-user-add", user._id);
         socket.current.on("get-users", (users: any) => {
             setOnlineUsers(users);

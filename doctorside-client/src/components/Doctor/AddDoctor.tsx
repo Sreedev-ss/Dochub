@@ -14,7 +14,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { io, Socket } from 'socket.io-client';
 import { showAlert } from '../../config/Redux/alertSlice';
 
-const socket: Socket = io('http://localhost:8080'); 
+const socket: Socket = io('https://sreedev.live/socket'); 
 
 const AddDoctorForm = () => {
    

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = "http://localhost:3000"
+const URL = "https://sreedev.live"
 
 
 const axiosInstance = axios.create({

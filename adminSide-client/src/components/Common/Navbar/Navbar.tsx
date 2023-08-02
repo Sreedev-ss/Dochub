@@ -25,7 +25,7 @@ import { useState } from 'react';
 import { Button } from '@mui/material';
 import { format } from 'timeago.js'
 
-const socket: Socket = io('http://localhost:8080');
+const socket: Socket = io('https://sreedev.live/socket');
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
